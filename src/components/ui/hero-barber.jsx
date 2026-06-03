@@ -8,165 +8,269 @@ import './hero-barber.css'
 
 extend(THREE)
 
-// ── Bloom post-processing ─────────────────────────────────────────────────
-function PostProcessing({ strength = 1.0, threshold = 0.8 }) {
+// ── Bloom ─────────────────────────────────────────────────────────────────
+function PostProcessing({ strength = 0.9, threshold = 0.7 }) {
   const { gl, scene, camera } = useThree()
-
   const render = useMemo(() => {
-    const pp        = new THREE.PostProcessing(gl)
-    const scenePass = pass(scene, camera)
+    const pp         = new THREE.PostProcessing(gl)
+    const scenePass  = pass(scene, camera)
     const sceneColor = scenePass.getTextureNode('output')
     const bloomPass  = bloom(sceneColor, strength, 0.5, threshold)
     pp.outputNode    = sceneColor.add(bloomPass)
     return pp
   }, [camera, gl, scene, strength, threshold])
-
   useFrame(() => { render.renderAsync() }, 1)
   return null
 }
 
-// ── Procedural Hair Clipper ───────────────────────────────────────────────
-function Clipper() {
+// ── Procedural Trimmer ────────────────────────────────────────────────────
+function Trimmer() {
   const groupRef = useRef()
 
   useFrame(({ clock, pointer }) => {
     if (!groupRef.current) return
     const t = clock.getElapsedTime()
-    // Gentle float
-    groupRef.current.position.y = Math.sin(t * 0.7) * 0.09
-    // Slow auto-rotation + mouse tilt
-    groupRef.current.rotation.y = t * 0.38 + pointer.x * 0.35
-    groupRef.current.rotation.x = -0.12 + pointer.y * 0.18
+    groupRef.current.position.y = Math.sin(t * 0.65) * 0.06
+    groupRef.current.rotation.y = t * 0.28 + pointer.x * 0.3
+    groupRef.current.rotation.x = pointer.y * 0.12
   })
 
-  // ── Shared materials ──
-  const bodyMat   = <meshStandardMaterial color="#0e0d0a" roughness={0.88} metalness={0.15} />
-  const goldMat   = <meshStandardMaterial color="#CA8A04" roughness={0.18} metalness={0.95} emissive="#4A2E00" emissiveIntensity={0.4} />
-  const brightMat = <meshStandardMaterial color="#D4AF37" roughness={0.05} metalness={1.0}  emissive="#7A5200" emissiveIntensity={0.7} />
-  const teethMat  = <meshStandardMaterial color="#F5C842" roughness={0.02} metalness={1.0}  emissive="#9A6800" emissiveIntensity={1.2} />
-  const ledMat    = <meshStandardMaterial color="#FFD700" roughness={0.1}  metalness={0.4}  emissive="#CA8A04" emissiveIntensity={4.0} />
-  const accentMat = <meshStandardMaterial color="#CA8A04" roughness={0.35} metalness={0.8}  emissive="#2A1800" emissiveIntensity={0.3} />
+  // ── Body profile via LatheGeometry ──
+  // Matches the organic ergonomic shape: narrow neck → swells into body → tapers to grip
+  const bodyPoints = useMemo(() => [
+    new THREE.Vector2(0.165, 1.08),  // narrow neck at top
+    new THREE.Vector2(0.200, 0.90),
+    new THREE.Vector2(0.245, 0.68),  // shoulder bulge
+    new THREE.Vector2(0.265, 0.42),  // widest
+    new THREE.Vector2(0.260, 0.18),
+    new THREE.Vector2(0.245, 0.00),
+    new THREE.Vector2(0.232, -0.18), // bottom of ergonomic section
+  ], [])
 
-  // ── Blade teeth — 12 evenly-spaced teeth ──
-  const teethCount = 12
-  const teethSpan  = 0.58
-  const toothW     = 0.032
-  const teeth      = Array.from({ length: teethCount }, (_, i) => {
+  // Grip profile — uniform cylinder, slightly wider than body base
+  const gripPoints = useMemo(() => [
+    new THREE.Vector2(0.232, -0.18),
+    new THREE.Vector2(0.235, -0.22),
+    new THREE.Vector2(0.235, -0.95),
+    new THREE.Vector2(0.230, -1.00),
+  ], [])
+
+  // ── Materials ──
+  const matBody   = { color: '#0B0B09', roughness: 0.92, metalness: 0.08 }
+  const matGrip   = { color: '#090908', roughness: 1.00, metalness: 0.00 }
+  const matBlade  = { color: '#1A1A14', roughness: 0.30, metalness: 0.80 }
+  const matTeeth  = { color: '#0D0D0B', roughness: 0.20, metalness: 0.85,
+                      emissive: '#1A1200', emissiveIntensity: 0.2 }
+  const matGold   = { color: '#CA8A04', roughness: 0.20, metalness: 0.90,
+                      emissive: '#4A3000', emissiveIntensity: 0.5 }
+  const matLED    = { color: '#D4AF37', roughness: 0.10, metalness: 0.50,
+                      emissive: '#CA8A04', emissiveIntensity: 3.5 }
+  const matBadge  = { color: '#CA8A04', roughness: 0.15, metalness: 0.95,
+                      emissive: '#3A2000', emissiveIntensity: 0.4 }
+  const matScrew  = { color: '#D4AF37', roughness: 0.10, metalness: 1.00,
+                      emissive: '#8B6000', emissiveIntensity: 0.6 }
+  const matCap    = { color: '#0E0E0B', roughness: 0.80, metalness: 0.20 }
+  const matBand   = { color: '#CA8A04', roughness: 0.25, metalness: 0.90,
+                      emissive: '#2A1800', emissiveIntensity: 0.3 }
+
+  // ── T-blade teeth (28 teeth, very fine) ──
+  const teethCount = 28
+  const teethSpan  = 0.70
+  const teeth = useMemo(() => Array.from({ length: teethCount }, (_, i) => {
     const x = -teethSpan / 2 + (i / (teethCount - 1)) * teethSpan
-    return (
-      <mesh key={i} position={[x, 1.28, 0.04]}>
-        <boxGeometry args={[toothW, 0.13, 0.22]} />
-        {teethMat}
-      </mesh>
-    )
-  })
+    return { x, key: i }
+  }), [])
 
-  // ── Grip ridges — 4 rings around body ──
-  const ridgeYPositions = [-0.62, -0.30, 0.02, 0.34]
-  const ridges = ridgeYPositions.map((y, i) => (
-    <mesh key={i} position={[0, y, 0]} rotation={[Math.PI / 2, 0, 0]}>
-      <torusGeometry args={[0.315 + i * 0.004, 0.011, 8, 32]} />
-      {accentMat}
-    </mesh>
-  ))
+  // ── Grip horizontal ridge rings (simulate knurling rows) ──
+  const ridgeCount = 22
+  const ridges = useMemo(() => Array.from({ length: ridgeCount }, (_, i) => {
+    const y = -0.25 - (i / (ridgeCount - 1)) * 0.72
+    return { y, key: i }
+  }), [])
+
+  // ── LED display segments (simulate 7-segment digits) ──
+  const ledSegments = [
+    // First digit "6" approximation - horizontal bars
+    { pos: [-0.045,  0.038, 0], size: [0.055, 0.008, 0.002] },
+    { pos: [-0.045,  0.000, 0], size: [0.055, 0.008, 0.002] },
+    { pos: [-0.045, -0.038, 0], size: [0.055, 0.008, 0.002] },
+    { pos: [-0.073,  0.019, 0], size: [0.008, 0.028, 0.002] },
+    { pos: [-0.073, -0.019, 0], size: [0.008, 0.028, 0.002] },
+    { pos: [-0.017, -0.019, 0], size: [0.008, 0.028, 0.002] },
+    // Second digit "5"
+    { pos: [ 0.045,  0.038, 0], size: [0.055, 0.008, 0.002] },
+    { pos: [ 0.045,  0.000, 0], size: [0.055, 0.008, 0.002] },
+    { pos: [ 0.045, -0.038, 0], size: [0.055, 0.008, 0.002] },
+    { pos: [ 0.017,  0.019, 0], size: [0.008, 0.028, 0.002] },
+    { pos: [ 0.073, -0.019, 0], size: [0.008, 0.028, 0.002] },
+  ]
 
   return (
     <>
       {/* ── Lighting ── */}
-      <ambientLight intensity={0.25} color="#FFD580" />
-      {/* Key light — catches blade reflections */}
-      <spotLight
-        position={[2.5, 4, 2.5]} intensity={60} color="#D4AF37"
-        angle={0.4} penumbra={0.6} castShadow
-      />
+      <ambientLight intensity={0.2} color="#FFC060" />
+      {/* Key from top-right — catches blade & badge */}
+      <spotLight position={[2, 5, 3]} intensity={80} color="#D4AF37"
+        angle={0.35} penumbra={0.7} castShadow />
       {/* Fill from left */}
-      <pointLight position={[-3, 2, 1]} intensity={12} color="#CA8A04" />
-      {/* Rim from behind */}
-      <pointLight position={[0, -2, -3]} intensity={8} color="#8B5E00" />
-      {/* LED glow point */}
-      <pointLight position={[0, 0.28, 0.6]} intensity={6} color="#FFD700" distance={1.5} />
+      <pointLight position={[-3, 1.5, 1]} intensity={15} color="#CA8A04" />
+      {/* Rim from behind-bottom */}
+      <pointLight position={[0.5, -2, -2]} intensity={8} color="#8B5E00" />
+      {/* LED glow */}
+      <pointLight position={[0.3, -0.7, 0.5]} intensity={4} color="#D4AF37" distance={0.8} />
+      {/* Power button glow */}
+      <pointLight position={[0.3, 0.08, 0.4]} intensity={3} color="#FFD700" distance={0.6} />
 
-      <group ref={groupRef}>
+      {/* ── Whole trimmer — slightly smaller ── */}
+      <group ref={groupRef} scale={[0.82, 0.82, 0.82]} position={[0, 0.08, 0]}>
 
-        {/* 1 ── MAIN GRIP BODY — tapered cylinder, wide at base */}
-        <mesh position={[0, -0.1, 0]} castShadow>
-          <cylinderGeometry args={[0.265, 0.34, 1.85, 24, 1]} />
-          {bodyMat}
+        {/* ══ 1. ERGONOMIC BODY (LatheGeometry) ══ */}
+        <mesh castShadow>
+          <latheGeometry args={[bodyPoints, 28]} />
+          <meshStandardMaterial {...matBody} />
         </mesh>
 
-        {/* 2 ── UPPER NECK — narrows toward blade housing */}
-        <mesh position={[0, 0.88, 0]}>
-          <cylinderGeometry args={[0.24, 0.265, 0.18, 24]} />
-          {bodyMat}
+        {/* ══ 2. GRIP (LatheGeometry — uniform cylinder with knurling) ══ */}
+        <mesh castShadow>
+          <latheGeometry args={[gripPoints, 28]} />
+          <meshStandardMaterial {...matGrip} />
         </mesh>
 
-        {/* 3 ── BLADE HOUSING BASE — dark gold rectangular block */}
-        <mesh position={[0, 1.03, 0]}>
-          <boxGeometry args={[0.64, 0.18, 0.30]} />
-          {goldMat}
+        {/* ══ 3. KNURLING RINGS — horizontal ridges to imply diamond texture ══ */}
+        {ridges.map(({ y, key }) => (
+          <mesh key={key} position={[0, y, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.237, 0.0035, 5, 32]} />
+            <meshStandardMaterial color="#1A1A12" roughness={0.6} metalness={0.4}
+              emissive="#100E00" emissiveIntensity={0.1} />
+          </mesh>
+        ))}
+
+        {/* ══ 4. T-BLADE BRACKET — left arm ══ */}
+        <mesh position={[-0.28, 1.21, -0.01]} castShadow>
+          <boxGeometry args={[0.055, 0.24, 0.10]} />
+          <meshStandardMaterial {...matBlade} />
+        </mesh>
+        {/* T-BLADE BRACKET — right arm */}
+        <mesh position={[0.28, 1.21, -0.01]} castShadow>
+          <boxGeometry args={[0.055, 0.24, 0.10]} />
+          <meshStandardMaterial {...matBlade} />
         </mesh>
 
-        {/* 4 ── BLADE PLATE — bright metallic face */}
-        <mesh position={[0, 1.15, 0.025]}>
-          <boxGeometry args={[0.60, 0.075, 0.24]} />
-          {brightMat}
+        {/* ══ 5. T-BLADE HORIZONTAL BAR ══ */}
+        <mesh position={[0, 1.35, -0.01]} castShadow>
+          <boxGeometry args={[0.74, 0.065, 0.12]} />
+          <meshStandardMaterial {...matBlade} />
         </mesh>
 
-        {/* 5 ── BLADE TEETH — 12 individual teeth */}
-        {teeth}
+        {/* ══ 6. BLADE TEETH — 28 fine teeth along bottom of T-bar ══ */}
+        {teeth.map(({ x, key }) => (
+          <mesh key={key} position={[x, 1.27, 0.02]}>
+            <boxGeometry args={[0.018, 0.078, 0.09]} />
+            <meshStandardMaterial {...matTeeth} />
+          </mesh>
+        ))}
 
-        {/* 6 ── INNER MOVING BLADE (offset row, slightly recessed) */}
-        {Array.from({ length: 11 }, (_, i) => {
-          const x = -0.52 / 2 + (i / 10) * 0.52
+        {/* ══ 7. INNER BLADE (slightly offset, recessed) ══ */}
+        {Array.from({ length: 24 }, (_, i) => {
+          const x = -0.60 / 2 + (i / 23) * 0.60
           return (
-            <mesh key={i} position={[x, 1.20, -0.04]}>
-              <boxGeometry args={[0.028, 0.08, 0.18]} />
-              {brightMat}
+            <mesh key={i} position={[x, 1.265, -0.01]}>
+              <boxGeometry args={[0.015, 0.055, 0.07]} />
+              <meshStandardMaterial {...matBlade} />
             </mesh>
           )
         })}
 
-        {/* 7 ── POWER BUTTON — glowing gold LED disc */}
-        <mesh position={[0, 0.28, 0.345]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.052, 0.052, 0.018, 20]} />
-          {ledMat}
+        {/* ══ 8. BLADE MOUNT — base where bracket meets body ══ */}
+        <mesh position={[0, 1.10, 0]}>
+          <boxGeometry args={[0.40, 0.055, 0.145]} />
+          <meshStandardMaterial color="#141410" roughness={0.5} metalness={0.6} />
         </mesh>
 
-        {/* 8 ── POWER BUTTON RING — chrome ring around LED */}
-        <mesh position={[0, 0.28, 0.338]} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.065, 0.009, 10, 28]} />
-          {accentMat}
+        {/* ══ 9. BADGE PLATE ══ */}
+        <mesh position={[0, 0.32, 0.268]}>
+          <boxGeometry args={[0.28, 0.060, 0.008]} />
+          <meshStandardMaterial {...matBadge} />
+        </mesh>
+        {/* Badge rounded ends (left & right caps) */}
+        <mesh position={[-0.14, 0.32, 0.268]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.030, 0.030, 0.008, 14]} rotation={[Math.PI / 2, 0, 0]} />
+          <meshStandardMaterial {...matBadge} />
+        </mesh>
+        <mesh position={[0.14, 0.32, 0.268]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.030, 0.030, 0.008, 14]} rotation={[Math.PI / 2, 0, 0]} />
+          <meshStandardMaterial {...matBadge} />
+        </mesh>
+        {/* Badge screws — left */}
+        <mesh position={[-0.125, 0.32, 0.274]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.012, 0.012, 0.01, 12]} />
+          <meshStandardMaterial {...matScrew} />
+        </mesh>
+        {/* Badge screws — right */}
+        <mesh position={[0.125, 0.32, 0.274]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.012, 0.012, 0.01, 12]} />
+          <meshStandardMaterial {...matScrew} />
         </mesh>
 
-        {/* 9 ── GRIP RIDGES — 4 bands for texture */}
-        {ridges}
-
-        {/* 10 ── BRAND STRIPE — thin gold bar on lower body */}
-        <mesh position={[0, -0.68, 0.348]}>
-          <boxGeometry args={[0.22, 0.028, 0.008]} />
-          {accentMat}
+        {/* ══ 10. POWER BUTTON (round, prominent) ══ */}
+        <mesh position={[0.26, 0.08, 0.12]} rotation={[0, -Math.PI / 4, 0]}>
+          <cylinderGeometry args={[0.048, 0.048, 0.022, 20]} />
+          <meshStandardMaterial {...matLED} />
+        </mesh>
+        {/* Button ring */}
+        <mesh position={[0.26, 0.08, 0.12]} rotation={[0, -Math.PI / 4, Math.PI / 2]}>
+          <torusGeometry args={[0.058, 0.006, 10, 24]} />
+          <meshStandardMaterial {...matGold} />
         </mesh>
 
-        {/* 11 ── BOTTOM CAP — rounded base */}
-        <mesh position={[0, -1.025, 0]}>
-          <cylinderGeometry args={[0.34, 0.30, 0.06, 24]} />
-          {accentMat}
+        {/* ══ 11. TRANSITION BAND (between body and grip) ══ */}
+        <mesh position={[0, -0.20, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[0.236, 0.010, 8, 32]} />
+          <meshStandardMaterial {...matBand} />
         </mesh>
 
-        {/* 12 ── SIDE VENT SLITS — small detail lines */}
-        {[-0.08, 0, 0.08].map((z, i) => (
-          <mesh key={i} position={[0.35, -0.45 + i * 0.1, z]} rotation={[0, 0, Math.PI / 2]}>
-            <boxGeometry args={[0.006, 0.12, 0.015]} />
-            {accentMat}
+        {/* ══ 12. LED DISPLAY — recessed window at bottom front ══ */}
+        {/* Screen bezel */}
+        <mesh position={[0.12, -0.78, 0.218]}>
+          <boxGeometry args={[0.175, 0.115, 0.012]} />
+          <meshStandardMaterial color="#090909" roughness={0.9} metalness={0.1} />
+        </mesh>
+        {/* Screen face */}
+        <mesh position={[0.12, -0.78, 0.224]}>
+          <boxGeometry args={[0.155, 0.095, 0.004]} />
+          <meshStandardMaterial color="#1A1200" roughness={0.1} metalness={0.0}
+            emissive="#CA8A04" emissiveIntensity={0.4} />
+        </mesh>
+        {/* LED segments */}
+        {ledSegments.map((seg, i) => (
+          <mesh key={i} position={[0.12 + seg.pos[0], -0.78 + seg.pos[1], 0.228 + seg.pos[2]]}>
+            <boxGeometry args={seg.size} />
+            <meshStandardMaterial {...matLED} />
           </mesh>
         ))}
+
+        {/* ══ 13. BOTTOM CAP ══ */}
+        <mesh position={[0, -1.04, 0]}>
+          <cylinderGeometry args={[0.235, 0.220, 0.065, 28]} />
+          <meshStandardMaterial {...matCap} />
+        </mesh>
+        {/* Bottom cap gold ring */}
+        <mesh position={[0, -1.008, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[0.236, 0.006, 8, 32]} />
+          <meshStandardMaterial {...matBand} />
+        </mesh>
+        {/* Very bottom disc */}
+        <mesh position={[0, -1.073, 0]}>
+          <cylinderGeometry args={[0.218, 0.210, 0.01, 28]} />
+          <meshStandardMaterial {...matCap} />
+        </mesh>
 
       </group>
     </>
   )
 }
 
-// ── Text overlay ──────────────────────────────────────────────────────────
+// ── Overlay ───────────────────────────────────────────────────────────────
 function Overlay({ onComplete }) {
   const [nameIn, setNameIn] = useState(false)
   const [subIn,  setSubIn]  = useState(false)
@@ -200,13 +304,12 @@ function Overlay({ onComplete }) {
   )
 }
 
-// ── Fallback (no WebGPU) ──────────────────────────────────────────────────
+// ── Fallback ──────────────────────────────────────────────────────────────
 function Fallback({ onComplete }) {
   useEffect(() => {
     const t = setTimeout(onComplete, 3000)
     return () => clearTimeout(t)
   }, [onComplete])
-
   return (
     <motion.div className="hb-fallback"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -240,7 +343,7 @@ export default function BarberIntro({ onComplete }) {
       <Canvas
         flat
         className="hb-canvas"
-        camera={{ position: [0, 0.1, 3.8], fov: 40 }}
+        camera={{ position: [0.4, 0.1, 4.2], fov: 38 }}
         shadows
         gl={async (props) => {
           const r = new THREE.WebGPURenderer({ ...props, antialias: true })
@@ -248,8 +351,8 @@ export default function BarberIntro({ onComplete }) {
           return r
         }}
       >
-        <PostProcessing strength={1.0} threshold={0.8} />
-        <Clipper />
+        <PostProcessing strength={0.9} threshold={0.7} />
+        <Trimmer />
       </Canvas>
     </div>
   )
