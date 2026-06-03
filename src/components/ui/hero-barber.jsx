@@ -56,22 +56,22 @@ function Trimmer() {
   ], [])
 
   // ── Materials ──
-  const matBody   = { color: '#0B0B09', roughness: 0.92, metalness: 0.08 }
-  const matGrip   = { color: '#090908', roughness: 1.00, metalness: 0.00 }
-  const matBlade  = { color: '#1A1A14', roughness: 0.30, metalness: 0.80 }
-  const matTeeth  = { color: '#0D0D0B', roughness: 0.20, metalness: 0.85,
-                      emissive: '#1A1200', emissiveIntensity: 0.2 }
-  const matGold   = { color: '#CA8A04', roughness: 0.20, metalness: 0.90,
-                      emissive: '#4A3000', emissiveIntensity: 0.5 }
-  const matLED    = { color: '#D4AF37', roughness: 0.10, metalness: 0.50,
-                      emissive: '#CA8A04', emissiveIntensity: 3.5 }
-  const matBadge  = { color: '#CA8A04', roughness: 0.15, metalness: 0.95,
-                      emissive: '#3A2000', emissiveIntensity: 0.4 }
-  const matScrew  = { color: '#D4AF37', roughness: 0.10, metalness: 1.00,
-                      emissive: '#8B6000', emissiveIntensity: 0.6 }
-  const matCap    = { color: '#0E0E0B', roughness: 0.80, metalness: 0.20 }
-  const matBand   = { color: '#CA8A04', roughness: 0.25, metalness: 0.90,
-                      emissive: '#2A1800', emissiveIntensity: 0.3 }
+  const matBody   = { color: '#2A2A22', roughness: 0.88, metalness: 0.12 }
+  const matGrip   = { color: '#1E1E18', roughness: 0.95, metalness: 0.05 }
+  const matBlade  = { color: '#3A3A30', roughness: 0.25, metalness: 0.85 }
+  const matTeeth  = { color: '#2E2E26', roughness: 0.18, metalness: 0.90,
+                      emissive: '#CA8A04', emissiveIntensity: 0.15 }
+  const matGold   = { color: '#CA8A04', roughness: 0.18, metalness: 0.92,
+                      emissive: '#7A4E00', emissiveIntensity: 0.8 }
+  const matLED    = { color: '#F5C842', roughness: 0.08, metalness: 0.40,
+                      emissive: '#CA8A04', emissiveIntensity: 5.0 }
+  const matBadge  = { color: '#CA8A04', roughness: 0.12, metalness: 0.96,
+                      emissive: '#6A4200', emissiveIntensity: 0.8 }
+  const matScrew  = { color: '#D4AF37', roughness: 0.08, metalness: 1.00,
+                      emissive: '#9A6800', emissiveIntensity: 1.0 }
+  const matCap    = { color: '#252520', roughness: 0.75, metalness: 0.25 }
+  const matBand   = { color: '#CA8A04', roughness: 0.22, metalness: 0.92,
+                      emissive: '#5A3800', emissiveIntensity: 0.6 }
 
   // ── T-blade teeth (28 teeth, very fine) ──
   const teethCount = 28
@@ -108,18 +108,20 @@ function Trimmer() {
   return (
     <>
       {/* ── Lighting ── */}
-      <ambientLight intensity={0.2} color="#FFC060" />
-      {/* Key from top-right — catches blade & badge */}
-      <spotLight position={[2, 5, 3]} intensity={80} color="#D4AF37"
-        angle={0.35} penumbra={0.7} castShadow />
-      {/* Fill from left */}
-      <pointLight position={[-3, 1.5, 1]} intensity={15} color="#CA8A04" />
-      {/* Rim from behind-bottom */}
-      <pointLight position={[0.5, -2, -2]} intensity={8} color="#8B5E00" />
+      {/* Strong ambient so dark body is visible */}
+      <ambientLight intensity={2.5} color="#FFE090" />
+      {/* Key light — top right, catches blade and badge reflections */}
+      <directionalLight position={[3, 6, 4]} intensity={4.0} color="#FFFFFF" castShadow />
+      {/* Gold fill from left */}
+      <pointLight position={[-3, 2, 2]} intensity={80} color="#CA8A04" />
+      {/* Front fill so the face of the trimmer reads clearly */}
+      <pointLight position={[0, 0, 5]} intensity={60} color="#FFF5D0" />
+      {/* Rim light from behind */}
+      <pointLight position={[1, -1, -3]} intensity={30} color="#8B5E00" />
       {/* LED glow */}
-      <pointLight position={[0.3, -0.7, 0.5]} intensity={4} color="#D4AF37" distance={0.8} />
+      <pointLight position={[0.3, -0.7, 0.6]} intensity={12} color="#D4AF37" distance={1.2} />
       {/* Power button glow */}
-      <pointLight position={[0.3, 0.08, 0.4]} intensity={3} color="#FFD700" distance={0.6} />
+      <pointLight position={[0.35, 0.1, 0.55]} intensity={10} color="#FFD700" distance={0.8} />
 
       {/* ── Whole trimmer — slightly smaller ── */}
       <group ref={groupRef} scale={[0.82, 0.82, 0.82]} position={[0, -0.18, 0]}>
