@@ -233,6 +233,56 @@
   margin: 0 0 0 48px; line-height: 1.5; font-family: 'Jost', sans-serif;
 }
 
+/* ── Per-day custom schedule ── */
+.day-loaded-label {
+  font-size: 13px; color: #9A8A6A; margin-bottom: 14px;
+  padding: 8px 12px; background: rgba(202,138,4,0.05);
+  border: 1px solid rgba(202,138,4,0.18); border-radius: 2px;
+}
+.day-loaded-label strong { color: #CA8A04; }
+
+.fine-time-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 6px; margin-bottom: 16px;
+}
+.fine-slot {
+  padding: 7px 4px; border-radius: 2px; border: 1.5px solid;
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.fine-slot.on  { border-color: rgba(16,185,129,0.4);  background: rgba(16,185,129,0.07); color: #6ee7b7; }
+.fine-slot.off { border-color: rgba(202,138,4,0.15);  background: rgba(202,138,4,0.03);  color: #4A3200; }
+.fine-slot.on:hover  { border-color: rgba(16,185,129,0.7); }
+.fine-slot.off:hover { border-color: rgba(202,138,4,0.4); color: #CA8A04; }
+
+.day-sched-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.btn-ghost-danger {
+  padding: 12px 20px; border-radius: 2px;
+  border: 1.5px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.06);
+  color: rgba(239,68,68,0.7); font-family: 'Jost', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.btn-ghost-danger:hover { border-color: rgba(239,68,68,0.6); color: #ef4444; background: rgba(239,68,68,0.12); }
+
+.day-overrides-list { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+.day-override-row {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: rgba(202,138,4,0.03); border: 1px solid rgba(202,138,4,0.12); border-radius: 2px;
+}
+.override-date  { font-size: 13px; font-weight: 600; color: #F5F0E8; flex: 1; font-family: 'Jost', sans-serif; }
+.override-slots { font-size: 12px; color: #6B5C3E; min-width: 60px; }
+.override-edit  {
+  padding: 5px 12px; border-radius: 2px; border: 1px solid rgba(202,138,4,0.3);
+  background: rgba(202,138,4,0.08); color: #CA8A04; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.override-edit:hover { background: rgba(202,138,4,0.18); }
+.override-remove {
+  background: none; border: none; color: #4A3200; cursor: pointer; font-size: 14px;
+  padding: 4px 6px; transition: color 0.2s;
+}
+.override-remove:hover { color: #ef4444; }
+
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .admin-header { padding: 16px 20px; }
@@ -242,4 +292,5 @@
   .stats-row    { gap: 10px; }
   .stat-num     { font-size: 28px; }
   .weekday-grid { grid-template-columns: repeat(4,1fr); }
+  .fine-time-grid { grid-template-columns: repeat(4, 1fr); }
 }

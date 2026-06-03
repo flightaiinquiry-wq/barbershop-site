@@ -1,26 +1,42 @@
 const K = {
-  BOOKINGS:      'obsidian_bookings',
-  BLOCKED_SLOTS: 'obsidian_blocked_slots',
-  BLOCKED_DATES: 'obsidian_blocked_dates',
-  BLOCKED_DAYS:  'obsidian_blocked_days',
-  DEFAULT_TIMES: 'obsidian_default_times',
-  REVIEWS:       'obsidian_reviews',
-  OWNER_PIN:     'obsidian_owner_pin',
-  HOURS:         'obsidian_business_hours',
+  BOOKINGS:       'obsidian_bookings',
+  BLOCKED_SLOTS:  'obsidian_blocked_slots',
+  BLOCKED_DATES:  'obsidian_blocked_dates',
+  BLOCKED_DAYS:   'obsidian_blocked_days',
+  DEFAULT_TIMES:  'obsidian_default_times',
+  REVIEWS:        'obsidian_reviews',
+  OWNER_PIN:      'obsidian_owner_pin',
+  HOURS:          'obsidian_business_hours',
+  DAY_SCHEDULES:  'obsidian_day_schedules',
 }
 
-const INITIAL_TIMES = ['9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM']
-export const ALL_POSSIBLE_TIMES = ['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM','7:00 PM']
+function buildTimeGrid(intervalMins) {
+  const out = []
+  for (let total = 7 * 60; total <= 20 * 60; total += intervalMins) {
+    const h24 = Math.floor(total / 60), m = total % 60
+    const period = h24 < 12 ? 'AM' : 'PM'
+    const h12 = h24 === 0 ? 12 : h24 > 12 ? h24 - 12 : h24
+    out.push(`${h12}:${String(m).padStart(2,'0')} ${period}`)
+  }
+  return out
+}
+
+const INITIAL_TIMES = ['9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM']
+export const ALL_POSSIBLE_TIMES = buildTimeGrid(30)   // 30-min grid for global defaults
+export const ALL_FINE_TIMES     = buildTimeGrid(15)   // 15-min grid for per-day overrides
 export const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 export const DAY_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
-export const HOURS_OPTIONS = [
-  '6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM',
-  '9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
-  '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
-  '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM',
-  '6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM',
-]
+export const HOURS_OPTIONS = (() => {
+  const out = []
+  for (let total = 6 * 60; total <= 21 * 60; total += 30) {
+    const h24 = Math.floor(total / 60), m = total % 60
+    const period = h24 < 12 ? 'AM' : 'PM'
+    const h12 = h24 === 0 ? 12 : h24 > 12 ? h24 - 12 : h24
+    out.push(`${h12}:${String(m).padStart(2,'0')} ${period}`)
+  }
+  return out
+})()
 
 function read(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback }
@@ -47,7 +63,6 @@ export function dateKey(date) {
 function slotKey(date, time) { return `${dateKey(date)}|${time}` }
 
 export function getBookings() { return read(K.BOOKINGS, []) }
-
 export function addBooking(form) {
   const bookings = getBookings()
   const booking  = { ...form, id: uid(), createdAt: new Date().toISOString() }
@@ -57,7 +72,6 @@ export function addBooking(form) {
   write(K.BLOCKED_SLOTS, [...blocked])
   return booking
 }
-
 export function cancelBooking(id) {
   const bookings = getBookings()
   const booking  = bookings.find(b => b.id === id)
@@ -83,20 +97,32 @@ export function isDateUnavailable(date) {
   return getBlockedWeekdays().has(dow) || getBlockedDates().has(dateKey(date))
 }
 
-export function getDefaultTimes()        { return read(K.DEFAULT_TIMES, INITIAL_TIMES) }
-export function setDefaultTimes(times)   { write(K.DEFAULT_TIMES, times) }
+export function getDefaultTimes()      { return read(K.DEFAULT_TIMES, INITIAL_TIMES) }
+export function setDefaultTimes(times) { write(K.DEFAULT_TIMES, times) }
 
-export function getBusinessHours()       { return read(K.HOURS, { open: null, close: null }) }
-export function setBusinessHours(hours)  { write(K.HOURS, hours) }
+export function getBusinessHours()      { return read(K.HOURS, { open: null, close: null }) }
+export function setBusinessHours(hours) { write(K.HOURS, hours) }
+
+export function getDaySchedule(dk)        { return (read(K.DAY_SCHEDULES, {}))[dk] ?? null }
+export function getAllDaySchedules()       { return read(K.DAY_SCHEDULES, {}) }
+export function setDaySchedule(dk, times) {
+  const all = read(K.DAY_SCHEDULES, {}); all[dk] = times; write(K.DAY_SCHEDULES, all)
+}
+export function clearDaySchedule(dk) {
+  const all = read(K.DAY_SCHEDULES, {}); delete all[dk]; write(K.DAY_SCHEDULES, all)
+}
 
 export function getAvailableTimesForDate(date) {
   if (!date) return getDefaultTimes()
   if (isDateUnavailable(date)) return []
-  const blocked = getBlockedSlots()
+  const dk       = dateKey(date)
+  const daySched = getDaySchedule(dk)
+  const blocked  = getBlockedSlots()
   const { open, close } = getBusinessHours()
   const openMins  = parseTimeMins(open)
   const closeMins = parseTimeMins(close)
-  return getDefaultTimes().filter(t => {
+  const base = daySched !== null ? daySched : getDefaultTimes()
+  return base.filter(t => {
     if (blocked.has(slotKey(date, t))) return false
     const tMins = parseTimeMins(t)
     if (openMins  !== null && tMins < openMins)  return false

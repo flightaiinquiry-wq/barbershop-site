@@ -2,13 +2,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   getBookings, cancelBooking,
-  getDefaultTimes, setDefaultTimes, ALL_POSSIBLE_TIMES,
+  getDefaultTimes, setDefaultTimes, ALL_POSSIBLE_TIMES, ALL_FINE_TIMES,
   getBlockedDates, blockDate, unblockDate,
   getBlockedWeekdays, blockWeekday, unblockWeekday,
   DAY_NAMES, DAY_SHORT,
   getOwnerPin, setOwnerPin,
   getReviews,
   getBusinessHours, setBusinessHours, HOURS_OPTIONS,
+  getDaySchedule, setDaySchedule, clearDaySchedule, getAllDaySchedules,
+  dateKey,
 } from '../lib/store'
 import './Admin.css'
 
@@ -202,6 +204,40 @@ function ScheduleTab() {
     unblockDate({ year, month:mon-1, day }); setBlocked([...getBlockedDates()])
   }
 
+  // ── Per-day schedule ──
+  const [dayPick,      setDayPick]     = useState({ year: new Date().getFullYear(), month: new Date().getMonth(), day: '' })
+  const [loadedDK,     setLoadedDK]    = useState(null)
+  const [dayTimes,     setDayTimes]    = useState([])
+  const [daySaved,     setDaySaved]    = useState(false)
+  const [daySchedules, setDaySchedules]= useState(() => getAllDaySchedules())
+
+  const loadDay = () => {
+    if (!dayPick.day) return
+    const dk = dateKey(dayPick)
+    setLoadedDK(dk)
+    setDayTimes(getDaySchedule(dk) ?? getDefaultTimes())
+  }
+  const toggleDayTime = t =>
+    setDayTimes(p => p.includes(t)
+      ? p.filter(x => x !== t)
+      : [...p, t].sort((a,b) => ALL_FINE_TIMES.indexOf(a) - ALL_FINE_TIMES.indexOf(b)))
+  const saveDaySchedule = () => {
+    if (!loadedDK) return
+    setDaySchedule(loadedDK, dayTimes)
+    setDaySchedules(getAllDaySchedules())
+    setDaySaved(true); setTimeout(() => setDaySaved(false), 2000)
+  }
+  const resetDaySchedule = () => {
+    if (!loadedDK) return
+    clearDaySchedule(loadedDK)
+    setDaySchedules(getAllDaySchedules())
+    setLoadedDK(null); setDayTimes([])
+  }
+  const removeDaySchedule = dk => {
+    clearDaySchedule(dk); setDaySchedules(getAllDaySchedules())
+    if (loadedDK === dk) { setLoadedDK(null); setDayTimes([]) }
+  }
+
   return (
     <div className="tab-content">
       {/* Business Hours */}
@@ -290,6 +326,63 @@ function ScheduleTab() {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>
                 {dk}
                 <button onClick={()=>removeBlock(dk)}>✕</button>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* ── Per-Day Custom Schedule ── */}
+      <section className="schedule-section">
+        <h3>Custom Day Schedule</h3>
+        <p className="section-hint">Override available times for one specific date — 15-min precision lets you set 30-min, 45-min, or any custom gap between slots.</p>
+        <div className="block-day-row">
+          <select className="admin-select" value={dayPick.month} onChange={e=>setDayPick(p=>({...p,month:parseInt(e.target.value)}))}>
+            {MONTHS_FULL.map((m,i)=><option key={i} value={i}>{m}</option>)}
+          </select>
+          <input type="number" min="1" max="31" placeholder="Day" className="admin-input-sm"
+            value={dayPick.day} onChange={e=>setDayPick(p=>({...p,day:parseInt(e.target.value)||''}))} />
+          <input type="number" min="2026" max="2030" className="admin-input-sm"
+            value={dayPick.year} onChange={e=>setDayPick(p=>({...p,year:parseInt(e.target.value)||p.year}))} />
+          <button className="btn-block" onClick={loadDay}>Load Day</button>
+        </div>
+
+        {loadedDK && (
+          <>
+            <p className="day-loaded-label">
+              Editing <strong>{loadedDK}</strong>
+              {getDaySchedule(loadedDK) ? ' — custom override active' : ' — using default (no override yet)'}
+            </p>
+            <div className="fine-time-grid">
+              {ALL_FINE_TIMES.map(t => (
+                <button key={t} className={`fine-slot ${dayTimes.includes(t)?'on':'off'}`} onClick={()=>toggleDayTime(t)}>
+                  {t}
+                </button>
+              ))}
+            </div>
+            <div className="day-sched-actions">
+              <button className={`btn-save ${daySaved?'saved':''}`} onClick={saveDaySchedule}>
+                {daySaved ? '✓ Saved!' : 'Save This Day'}
+              </button>
+              <button className="btn-ghost-danger" onClick={resetDaySchedule}>Reset to Default</button>
+            </div>
+          </>
+        )}
+
+        {Object.keys(daySchedules).length > 0 && (
+          <div className="day-overrides-list">
+            <p className="section-hint" style={{marginBottom:8}}>Active day overrides:</p>
+            {Object.entries(daySchedules).sort().map(([dk, times]) => (
+              <div key={dk} className="day-override-row">
+                <span className="override-date">{dk}</span>
+                <span className="override-slots">{times.length} slot{times.length!==1?'s':''}</span>
+                <button className="override-edit" onClick={() => {
+                  const [y,mo,d] = dk.split('-').map(Number)
+                  setDayPick({ year:y, month:mo-1, day:d })
+                  setLoadedDK(dk)
+                  setDayTimes(getDaySchedule(dk) ?? getDefaultTimes())
+                }}>Edit</button>
+                <button className="override-remove" onClick={()=>removeDaySchedule(dk)}>✕</button>
               </div>
             ))}
           </div>
