@@ -13,7 +13,7 @@
   letter-spacing: 0.25em; color: #CA8A04; text-transform: uppercase;
 }
 .nav-links { display: flex; align-items: center; gap: 32px; }
-.nav-links a { font-size: 13px; font-weight: 500; color: #9A8A6A; letter-spacing: 0.1em; transition: color 0.2s; text-transform: uppercase; }
+.nav-links a { font-size: 13px; font-weight: 500; color: #C8B080; letter-spacing: 0.1em; transition: color 0.2s; text-transform: uppercase; }
 .nav-links a:hover { color: #F5F0E8; }
 .nav-cta {
   background: transparent; border: 1.5px solid #CA8A04; color: #CA8A04;
@@ -48,7 +48,7 @@
 }
 .hero-title em { color: #CA8A04; font-style: italic; }
 
-.hero-sub { font-size: 16px; line-height: 1.7; color: #9A8A6A; max-width: 440px; }
+.hero-sub { font-size: 16px; line-height: 1.7; color: #C8B080; max-width: 440px; }
 
 .hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 
@@ -66,7 +66,7 @@
 
 .btn-ghost {
   font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600;
-  color: #9A8A6A; text-transform: uppercase; letter-spacing: 0.15em;
+  color: #C8B080; text-transform: uppercase; letter-spacing: 0.15em;
   border-bottom: 1px solid rgba(154,138,106,0.4); padding-bottom: 2px;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -81,7 +81,7 @@
   font-family: 'Bodoni Moda', serif; font-size: 30px;
   color: #CA8A04; font-weight: 700; line-height: 1;
 }
-.stat-label { font-size: 11px; color: #A8956E; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+.stat-label { font-size: 11px; color: #C0A870; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ── Razor deco ── */
 .razor-deco { flex-shrink: 0; width: clamp(260px, 35vw, 420px); }
@@ -118,10 +118,10 @@
 }
 .exp-copy h2 em { color: #CA8A04; font-style: italic; }
 
-.exp-body { font-size: 14px; line-height: 1.8; color: #A8956E; max-width: 360px; }
+.exp-body { font-size: 14px; line-height: 1.8; color: #C0A870; max-width: 360px; }
 
 .exp-features { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.exp-features li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #9A8A6A; font-weight: 500; }
+.exp-features li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #C8B080; font-weight: 500; }
 .exp-features li svg { flex-shrink: 0; }
 
 .exp-cta {
@@ -158,7 +158,7 @@
 .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.4em; color: #CA8A04; text-transform: uppercase; }
 .section-header h2 { font-family: 'Bodoni Moda', serif; font-size: clamp(28px, 4vw, 48px); font-weight: 500; color: #F5F0E8; }
 .section-header h2 em { color: #CA8A04; font-style: italic; }
-.section-sub { font-size: 15px; color: #A8956E; max-width: 480px; line-height: 1.7; }
+.section-sub { font-size: 15px; color: #C0A870; max-width: 480px; line-height: 1.7; }
 
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
@@ -166,7 +166,7 @@
   display: flex; align-items: center; gap: 10px; margin-top: 24px;
   padding: 14px 20px; border: 1px solid rgba(202,138,4,0.25);
   border-radius: 4px; background: rgba(202,138,4,0.05);
-  font-size: 13px; color: #9A8A6A; line-height: 1.5;
+  font-size: 13px; color: #C8B080; line-height: 1.5;
 }
 .senior-note strong { color: #CA8A04; }
 
@@ -192,7 +192,7 @@
   font-weight: 500; color: #F5F0E8; margin-bottom: 8px;
 }
 
-.service-card p { font-size: 13px; line-height: 1.7; color: #A8956E; margin-bottom: 20px; }
+.service-card p { font-size: 13px; line-height: 1.7; color: #C0A870; margin-bottom: 20px; }
 
 .service-price {
   font-family: 'Jost', sans-serif; font-size: 22px; font-weight: 700;
@@ -235,7 +235,7 @@
 
 .barber-info h3 { font-family: 'Bodoni Moda', serif; font-size: 17px; font-weight: 500; color: #F5F0E8; margin-bottom: 4px; }
 .barber-role { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #CA8A04; margin-bottom: 6px; }
-.barber-specialty { font-size: 12px; color: #A8956E; line-height: 1.5; }
+.barber-specialty { font-size: 12px; color: #C0A870; line-height: 1.5; }
 
 /* ── Process ── */
 .process-section { padding: 80px 48px; max-width: 1280px; margin: 0 auto; }
@@ -253,7 +253,7 @@
 }
 
 .process-step h3 { font-family: 'Bodoni Moda', serif; font-size: 20px; font-weight: 500; color: #F5F0E8; margin-bottom: 6px; }
-.process-step p { font-size: 14px; color: #A8956E; line-height: 1.7; }
+.process-step p { font-size: 14px; color: #C0A870; line-height: 1.7; }
 
 /* ── Testimonials ── */
 .testimonials-section { padding: 80px 48px; max-width: 1280px; margin: 0 auto; }
@@ -264,8 +264,8 @@
   border-radius: 4px; padding: 28px; display: flex; flex-direction: column; gap: 12px;
 }
 .stars { color: #CA8A04; font-size: 14px; letter-spacing: 3px; }
-.testimonial-card p { font-size: 14px; line-height: 1.75; color: #9A8A6A; font-style: italic; flex: 1; }
-.testimonial-card span { font-size: 12px; font-weight: 600; color: #8A7858; letter-spacing: 0.1em; text-transform: uppercase; }
+.testimonial-card p { font-size: 14px; line-height: 1.75; color: #C8B080; font-style: italic; flex: 1; }
+.testimonial-card span { font-size: 12px; font-weight: 600; color: #B0986A; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ── CTA Banner ── */
 .cta-banner {
@@ -282,7 +282,7 @@
 }
 .cta-banner h2 { font-family: 'Bodoni Moda', serif; font-size: clamp(30px, 4.5vw, 56px); font-weight: 500; color: #F5F0E8; margin: 12px 0; }
 .cta-banner h2 em { color: #CA8A04; font-style: italic; }
-.cta-banner > p { font-size: 15px; color: #A8956E; margin-bottom: 32px; }
+.cta-banner > p { font-size: 15px; color: #C0A870; margin-bottom: 32px; }
 
 /* ── Footer ── */
 .footer {
@@ -291,14 +291,14 @@
 }
 .footer-logo-wrap { display: flex; align-items: center; gap: 12px; }
 .footer-logo { font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.3em; color: #CA8A04; text-transform: uppercase; }
-.footer > p { font-size: 13px; color: #8A7858; }
+.footer > p { font-size: 13px; color: #B0986A; }
 .footer-links { display: flex; gap: 28px; }
-.footer-links a { font-size: 12px; color: #A8956E; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+.footer-links a { font-size: 12px; color: #C0A870; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
 .footer-links a:hover { color: #CA8A04; }
-.footer-copy { font-size: 11px; color: #7A6A4A; }
+.footer-copy { font-size: 11px; color: #9A8A62; }
 .owner-login-btn {
   margin-top: 16px; background: none; border: none;
-  font-size: 11px; color: #7A6A4A; letter-spacing: 0.12em;
+  font-size: 11px; color: #9A8A62; letter-spacing: 0.12em;
   text-transform: uppercase; cursor: pointer; opacity: 0.45;
   transition: opacity 0.2s, color 0.2s; font-family: 'Jost', sans-serif;
 }

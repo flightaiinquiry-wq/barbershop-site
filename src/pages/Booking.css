@@ -1,5 +1,5 @@
 :root {
-  --gold: #CA8A04; --gold-light: #D4AF37; --gold-muted: #A8956E;
+  --gold: #CA8A04; --gold-light: #D4AF37; --gold-muted: #C0A870;
   --black: #080806; --surface: #111109; --text: #F5F0E8; --text-muted: #C4B08A;
 }
 
@@ -58,7 +58,7 @@
 .step-dot {
   display: flex; align-items: center; gap: 8px; flex: 1;
   font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: #8A7858;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #B0986A;
 }
 .dot-circle {
   width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(202,138,4,0.2);
@@ -73,14 +73,14 @@
 .step-sub { font-size: 13px; color: var(--gold-muted); margin-top: -4px; }
 
 .input-group { display: flex; flex-direction: column; gap: 6px; }
-.input-group label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #A8956E; }
+.input-group label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #C0A870; }
 .input-group input {
   background: rgba(202,138,4,0.05); border: 1.5px solid rgba(202,138,4,0.15);
   border-radius: 2px; color: var(--text); padding: 12px 14px;
   font-family: 'Jost', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s;
 }
 .input-group input:focus { border-color: var(--gold); }
-.input-group input::placeholder { color: #8A7858; }
+.input-group input::placeholder { color: #B0986A; }
 .input-group.error input { border-color: #b45309; }
 .error-msg { font-size: 12px; color: #b45309; }
 
@@ -131,7 +131,7 @@
 .cal-nav:hover { border-color: var(--gold); color: var(--gold); }
 
 .cal-days-header { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
-.cal-days-header span { text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #8A7858; padding: 4px 0; }
+.cal-days-header span { text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #B0986A; padding: 4px 0; }
 
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .cal-day {
@@ -145,8 +145,8 @@
 .cal-day.past { color: #2A2010; cursor: not-allowed; }
 .cal-day.day-off { color: #3A3020; cursor: not-allowed; }
 
-.time-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #A8956E; margin-top: 4px; }
-.no-times-msg { font-size: 13px; color: #A8956E; font-style: italic; }
+.time-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #C0A870; margin-top: 4px; }
+.no-times-msg { font-size: 13px; color: #C0A870; font-style: italic; }
 
 .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .time-btn {
@@ -175,7 +175,7 @@
 .success-row { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-muted); }
 .success-icon { color: var(--gold); font-size: 12px; width: 16px; text-align: center; }
 
-.success-sub { font-size: 13px; color: #A8956E; font-style: italic; }
+.success-sub { font-size: 13px; color: #C0A870; font-style: italic; }
 
 /* ── First visit ── */
 .first-visit-section { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -193,7 +193,7 @@
 .btn-returning {
   padding: 10px 22px; border-radius: 2px;
   border: 1.5px solid rgba(154,138,106,0.3); background: transparent;
-  color: #A8956E; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 700;
+  color: #C0A870; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 700;
   letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
 }
 .btn-returning:hover { border-color: #9A8A6A; color: #9A8A6A; }
@@ -209,7 +209,7 @@
   box-sizing: border-box;
 }
 .review-textarea:focus { border-color: #CA8A04; }
-.review-textarea::placeholder { color: #8A7858; }
+.review-textarea::placeholder { color: #B0986A; }
 
 .review-thanks { font-size: 13px; color: #9A8A6A; text-align: center; }
 
