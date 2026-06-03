@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import BarberIntro from '../components/ui/hero-barber'
 import './Landing.css'
 
-/* ── Animated razor SVG deco ── */
+/* ── Straight razor + geometric rings hero deco ── */
 function RazorDeco({ animate }) {
   return (
     <motion.div
@@ -15,89 +15,82 @@ function RazorDeco({ animate }) {
     >
       <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.25" />
+          <radialGradient id="rzGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.22" />
             <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="goldIris" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#F5C842" />
-            <stop offset="50%" stopColor="#CA8A04" />
-            <stop offset="100%" stopColor="#4A3200" />
-          </radialGradient>
-          <filter id="goldBlur"><feGaussianBlur stdDeviation="10" /></filter>
-          <clipPath id="bladeClip">
-            <path d="M160,40 L280,160 L160,280 L40,160 Z" />
-          </clipPath>
+          <linearGradient id="bladeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stopColor="#CA8A04" />
+            <stop offset="55%"  stopColor="#D4AF37" />
+            <stop offset="100%" stopColor="#F5C842" />
+          </linearGradient>
+          <filter id="rzBlur"><feGaussianBlur stdDeviation="12" /></filter>
         </defs>
 
-        {/* Outer glow */}
-        <ellipse cx="160" cy="160" rx="140" ry="140" fill="url(#goldGlow)" filter="url(#goldBlur)" />
+        {/* Background glow */}
+        <ellipse cx="160" cy="160" rx="140" ry="140" fill="url(#rzGlow)" filter="url(#rzBlur)" />
 
-        {/* Diamond ring */}
-        <motion.path
-          d="M160,30 L290,160 L160,290 L30,160 Z"
-          stroke="#CA8A04" strokeWidth="0.8" fill="none" strokeOpacity="0.4"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+        {/* Outer rotating diamond rings */}
+        <motion.path d="M160,28 L292,160 L160,292 L28,160 Z"
+          stroke="#CA8A04" strokeWidth="0.9" fill="none" strokeOpacity="0.35"
+          animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
           style={{ transformOrigin: '160px 160px' }}
         />
-        <motion.path
-          d="M160,55 L265,160 L160,265 L55,160 Z"
-          stroke="#D4AF37" strokeWidth="0.5" fill="none" strokeOpacity="0.25"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        <motion.path d="M160,56 L264,160 L160,264 L56,160 Z"
+          stroke="#D4AF37" strokeWidth="0.5" fill="none" strokeOpacity="0.2"
+          animate={{ rotate: -360 }} transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
           style={{ transformOrigin: '160px 160px' }}
         />
 
-        {/* Central orb — eye of precision */}
-        <circle cx="160" cy="160" r="55" fill="url(#goldIris)" />
-        <motion.circle
-          cx="160" cy="160"
-          animate={{ r: [22, 26, 22] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          fill="#080806"
-        />
-        <circle cx="170" cy="150" r="8" fill="white" opacity="0.75" />
-        <circle cx="152" cy="168" r="4" fill="white" opacity="0.35" />
+        {/* ── STRAIGHT RAZOR (tilted 38°, centered at 160,160) ── */}
+        <g transform="rotate(38, 160, 160)">
+          {/* Handle — dark pill with gold border */}
+          <rect x="58" y="150" width="108" height="26" rx="13"
+            fill="#0D0C08" stroke="#CA8A04" strokeWidth="1.5" />
+          {/* Handle rivets */}
+          <circle cx="80"  cy="163" r="5.5" fill="#CA8A04" />
+          <circle cx="103" cy="163" r="5.5" fill="#CA8A04" />
+          <circle cx="126" cy="163" r="5.5" fill="#CA8A04" />
+          {/* End cap */}
+          <circle cx="64"  cy="163" r="9"   fill="#CA8A04" fillOpacity="0.35" />
+          {/* Pivot pin */}
+          <circle cx="166" cy="163" r="10"  fill="#D4AF37" />
+          <circle cx="166" cy="163" r="5"   fill="#6A4800" />
 
-        {/* Scissors arms */}
-        {[0, 90, 180, 270].map((angle, i) => {
-          const rad = (angle * Math.PI) / 180
-          const x1 = 160 + Math.cos(rad) * 65
-          const y1 = 160 + Math.sin(rad) * 65
-          const x2 = 160 + Math.cos(rad) * 130
-          const y2 = 160 + Math.sin(rad) * 130
-          return (
-            <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-              stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.7"
-            />
-          )
-        })}
+          {/* Blade body */}
+          <path d="M166,151 L258,155 L263,163 L258,171 L166,175 Z" fill="url(#bladeGrad)" />
+          {/* Blade spine */}
+          <line x1="166" y1="151" x2="258" y2="155" stroke="#8B6000" strokeWidth="1.2" />
+          {/* Cutting edge — bright highlight */}
+          <line x1="166" y1="175" x2="263" y2="163" stroke="#F5C842" strokeWidth="2.5" />
+          <line x1="166" y1="175" x2="263" y2="163" stroke="#FFE580" strokeWidth="1"
+            strokeOpacity="0.6" />
+        </g>
 
-        {/* Tick marks around ring */}
+        {/* Tick marks */}
         {[...Array(16)].map((_, i) => {
           const a = (i / 16) * Math.PI * 2
-          const r1 = 138, r2 = i % 4 === 0 ? 118 : 128
+          const r1 = 138, r2 = i % 4 === 0 ? 116 : 128
           return (
             <line key={i}
               x1={160 + Math.cos(a) * r1} y1={160 + Math.sin(a) * r1}
               x2={160 + Math.cos(a) * r2} y2={160 + Math.sin(a) * r2}
-              stroke="#CA8A04" strokeWidth={i % 4 === 0 ? 1.5 : 0.8} strokeOpacity="0.5"
+              stroke="#CA8A04" strokeWidth={i % 4 === 0 ? 1.6 : 0.8} strokeOpacity="0.5"
             />
           )
         })}
 
-        {/* Shimmer dots */}
+        {/* Corner sparkles */}
         {[45, 135, 225, 315].map((angle, i) => {
           const rad = (angle * Math.PI) / 180
           return (
             <motion.circle key={i}
-              cx={160 + Math.cos(rad) * 100}
-              cy={160 + Math.sin(rad) * 100}
+              cx={160 + Math.cos(rad) * 102}
+              cy={160 + Math.sin(rad) * 102}
               r="3" fill="#D4AF37"
-              animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.6, 1] }}
+              animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.7, 1] }}
               transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.6, ease: 'easeInOut' }}
-              style={{ transformOrigin: `${160 + Math.cos(rad) * 100}px ${160 + Math.sin(rad) * 100}px` }}
+              style={{ transformOrigin: `${160 + Math.cos(rad) * 102}px ${160 + Math.sin(rad) * 102}px` }}
             />
           )
         })}
@@ -338,50 +331,93 @@ export default function Landing() {
 
             <div className="exp-visual">
               <div className="exp-glow" />
-              {/* Animated 3D-style rotating orb */}
+              {/* Animated scissors */}
               <div className="orb-wrap">
                 <svg viewBox="0 0 300 300" fill="none" className="orb-svg">
                   <defs>
-                    <radialGradient id="orbGrad" cx="45%" cy="38%" r="60%">
-                      <stop offset="0%" stopColor="#F5C842" />
-                      <stop offset="40%" stopColor="#CA8A04" />
-                      <stop offset="100%" stopColor="#1C1000" />
-                    </radialGradient>
-                    <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#CA8A04" stopOpacity="0.3" />
+                    <radialGradient id="scGlow" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stopColor="#CA8A04" stopOpacity="0.25" />
                       <stop offset="100%" stopColor="#CA8A04" stopOpacity="0" />
                     </radialGradient>
-                    <filter id="orbBlur"><feGaussianBlur stdDeviation="14" /></filter>
+                    <filter id="scBlur"><feGaussianBlur stdDeviation="16" /></filter>
+                    <linearGradient id="scBlade" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#F5C842" />
+                      <stop offset="100%" stopColor="#CA8A04" />
+                    </linearGradient>
                   </defs>
-                  <ellipse cx="150" cy="150" rx="130" ry="130" fill="url(#orbGlow)" filter="url(#orbBlur)" />
-                  <circle cx="150" cy="150" r="90" fill="url(#orbGrad)" />
-                  <motion.circle cx="150" cy="150" r="90" fill="none" stroke="#D4AF37" strokeWidth="0.8" strokeOpacity="0.3"
-                    strokeDasharray="12 6"
-                    animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+
+                  {/* Background glow */}
+                  <ellipse cx="150" cy="150" rx="120" ry="120" fill="url(#scGlow)" filter="url(#scBlur)" />
+
+                  {/* Outer rotating ring */}
+                  <motion.circle cx="150" cy="150" r="118" fill="none"
+                    stroke="#CA8A04" strokeWidth="0.7" strokeOpacity="0.25"
+                    strokeDasharray="10 8"
+                    animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
                     style={{ transformOrigin: '150px 150px' }}
                   />
-                  <motion.circle cx="150" cy="150" r="110" fill="none" stroke="#CA8A04" strokeWidth="0.6" strokeOpacity="0.2"
-                    strokeDasharray="8 10"
-                    animate={{ rotate: -360 }} transition={{ duration: 32, repeat: Infinity, ease: 'linear' }}
+
+                  {/* ── SCISSORS ── */}
+                  {/* Top blade — opens upward */}
+                  <motion.g
+                    animate={{ rotate: [12, 28, 12] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
                     style={{ transformOrigin: '150px 150px' }}
-                  />
-                  <circle cx="150" cy="150" r="32" fill="#080806" />
-                  <circle cx="162" cy="138" r="12" fill="white" opacity="0.7" />
-                  <circle cx="142" cy="158" r="6" fill="white" opacity="0.3" />
-                  {[...Array(24)].map((_, i) => {
-                    const a = (i / 24) * Math.PI * 2
-                    const r1 = 92, r2 = i % 6 === 0 ? 76 : 84
-                    return <line key={i} x1={150 + Math.cos(a)*r1} y1={150 + Math.sin(a)*r1} x2={150 + Math.cos(a)*r2} y2={150 + Math.sin(a)*r2} stroke="#D4AF37" strokeWidth={i%6===0?1.5:0.7} strokeOpacity="0.5" />
-                  })}
-                  {[60,150,240,330].map((angle, i) => {
-                    const rad = angle * Math.PI / 180
-                    return (
-                      <motion.circle key={i} cx={150 + Math.cos(rad)*118} cy={150 + Math.sin(rad)*118} r="4" fill="#D4AF37"
-                        animate={{ opacity: [0.3,1,0.3], scale: [1,1.8,1] }}
-                        transition={{ duration: 2.4, repeat: Infinity, delay: i*0.6 }}
-                        style={{ transformOrigin: `${150+Math.cos(rad)*118}px ${150+Math.sin(rad)*118}px` }}
-                      />
-                    )
+                  >
+                    {/* Blade 1 */}
+                    <path d="M150,150 L80,72" stroke="url(#scBlade)" strokeWidth="7" strokeLinecap="round" />
+                    <path d="M150,150 L78,70" stroke="#FFE580" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.7" />
+                    {/* Handle ring 1 */}
+                    <circle cx="68" cy="62" r="22" fill="none" stroke="#CA8A04" strokeWidth="3" />
+                    <circle cx="68" cy="62" r="13" fill="#0D0C08" stroke="#CA8A04" strokeWidth="1" />
+                    <circle cx="68" cy="62" r="6"  fill="#CA8A04" fillOpacity="0.5" />
+                  </motion.g>
+
+                  {/* Bottom blade — opens downward */}
+                  <motion.g
+                    animate={{ rotate: [-12, -28, -12] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{ transformOrigin: '150px 150px' }}
+                  >
+                    {/* Blade 2 */}
+                    <path d="M150,150 L220,72" stroke="url(#scBlade)" strokeWidth="7" strokeLinecap="round" />
+                    <path d="M150,150 L222,70" stroke="#FFE580" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.7" />
+                    {/* Handle ring 2 */}
+                    <circle cx="232" cy="62" r="22" fill="none" stroke="#CA8A04" strokeWidth="3" />
+                    <circle cx="232" cy="62" r="13" fill="#0D0C08" stroke="#CA8A04" strokeWidth="1" />
+                    <circle cx="232" cy="62" r="6"  fill="#CA8A04" fillOpacity="0.5" />
+                  </motion.g>
+
+                  {/* Tail blades (lower half, mirror) */}
+                  <motion.g
+                    animate={{ rotate: [12, 28, 12] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{ transformOrigin: '150px 150px' }}
+                  >
+                    <path d="M150,150 L90,240" stroke="#CA8A04" strokeWidth="5" strokeLinecap="round" strokeOpacity="0.6" />
+                  </motion.g>
+                  <motion.g
+                    animate={{ rotate: [-12, -28, -12] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{ transformOrigin: '150px 150px' }}
+                  >
+                    <path d="M150,150 L210,240" stroke="#CA8A04" strokeWidth="5" strokeLinecap="round" strokeOpacity="0.6" />
+                  </motion.g>
+
+                  {/* Pivot screw */}
+                  <circle cx="150" cy="150" r="11" fill="#D4AF37" />
+                  <circle cx="150" cy="150" r="6"  fill="#8B6000" />
+                  <circle cx="150" cy="150" r="2.5" fill="#F5C842" />
+
+                  {/* Tick marks */}
+                  {[...Array(20)].map((_, i) => {
+                    const a = (i / 20) * Math.PI * 2
+                    const r1 = 118, r2 = i % 5 === 0 ? 104 : 112
+                    return <line key={i}
+                      x1={150 + Math.cos(a)*r1} y1={150 + Math.sin(a)*r1}
+                      x2={150 + Math.cos(a)*r2} y2={150 + Math.sin(a)*r2}
+                      stroke="#CA8A04" strokeWidth={i%5===0?1.4:0.7} strokeOpacity="0.45"
+                    />
                   })}
                 </svg>
               </div>
