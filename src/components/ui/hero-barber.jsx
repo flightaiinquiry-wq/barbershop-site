@@ -122,7 +122,7 @@ function Trimmer() {
       <pointLight position={[0.3, 0.08, 0.4]} intensity={3} color="#FFD700" distance={0.6} />
 
       {/* ── Whole trimmer — slightly smaller ── */}
-      <group ref={groupRef} scale={[0.82, 0.82, 0.82]} position={[0, 0.08, 0]}>
+      <group ref={groupRef} scale={[0.82, 0.82, 0.82]} position={[0, -0.18, 0]}>
 
         {/* ══ 1. ERGONOMIC BODY (LatheGeometry) ══ */}
         <mesh castShadow>
@@ -343,7 +343,7 @@ export default function BarberIntro({ onComplete }) {
       <Canvas
         flat
         className="hb-canvas"
-        camera={{ position: [0.4, 0.1, 4.2], fov: 38 }}
+        camera={{ position: [0.4, 0.0, 4.8], fov: 42 }}
         shadows
         gl={async (props) => {
           const r = new THREE.WebGPURenderer({ ...props, antialias: true })
