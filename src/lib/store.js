@@ -138,5 +138,5 @@ export function addReview({ name, service, rating, ratingLabel, comment }) {
   write(K.REVIEWS, reviews)
 }
 
-export function getOwnerPin()    { return localStorage.getItem(K.OWNER_PIN) || '1234' }
+export function getOwnerPin()    { return localStorage.getItem(K.OWNER_PIN) || '123456' }
 export function setOwnerPin(pin) { localStorage.setItem(K.OWNER_PIN, pin) }

@@ -33,11 +33,11 @@ function PinScreen({ onSuccess }) {
   const [shake, setShake] = useState(false)
   const [error, setError] = useState(false)
 
-  const enter = d => setInput(p => p.length < 4 ? p + d : p)
+  const enter = d => setInput(p => p.length < 6 ? p + d : p)
   const del   = () => setInput(p => p.slice(0, -1))
 
   useEffect(() => {
-    if (input.length < 4) return
+    if (input.length < 6) return
     if (input === getOwnerPin()) { onSuccess(); return }
     setShake(true); setError(true)
     setTimeout(() => { setShake(false); setError(false); setInput('') }, 700)
@@ -52,7 +52,7 @@ function PinScreen({ onSuccess }) {
         animate={shake ? { x: [0,-10,10,-8,8,0] } : {}}
         transition={{ duration: 0.5 }}
       >
-        {[0,1,2,3].map(i => <div key={i} className={`pin-dot ${input.length > i ? 'filled' : ''}`} />)}
+        {[0,1,2,3,4,5].map(i => <div key={i} className={`pin-dot ${input.length > i ? 'filled' : ''}`} />)}
       </motion.div>
       {error && <p className="pin-error-msg">Wrong code — try again</p>}
       <div className="pin-pad">
@@ -407,7 +407,7 @@ function SettingsTab() {
   const [pinMsg, setPinMsg]     = useState('')
 
   const savePin = () => {
-    if (pin.length!==4 || !/^\d{4}$/.test(pin)) { setPinMsg('PIN must be 4 digits'); return }
+    if (pin.length!==6 || !/^\d{6}$/.test(pin)) { setPinMsg('PIN must be 6 digits'); return }
     if (pin!==pinConfirm) { setPinMsg('PINs do not match'); return }
     setOwnerPin(pin); setPin(''); setPC('')
     setPinMsg('✓ PIN updated!'); setTimeout(()=>setPinMsg(''),2500)
@@ -420,12 +420,12 @@ function SettingsTab() {
         <div className="settings-fields">
           <div className="field-group">
             <label>New PIN (4 digits)</label>
-            <input type="password" maxLength={4} placeholder="••••" className="admin-input"
+            <input type="password" maxLength={6} placeholder="••••••" className="admin-input"
               value={pin} onChange={e=>setPin(e.target.value.replace(/\D/g,''))} />
           </div>
           <div className="field-group">
             <label>Confirm PIN</label>
-            <input type="password" maxLength={4} placeholder="••••" className="admin-input"
+            <input type="password" maxLength={6} placeholder="••••••" className="admin-input"
               value={pinConfirm} onChange={e=>setPC(e.target.value.replace(/\D/g,''))} />
           </div>
         </div>
