@@ -1,0 +1,188 @@
+:root {
+  --gold: #CA8A04; --gold-light: #D4AF37; --gold-muted: #6B5C3E;
+  --black: #080806; --surface: #111109; --text: #F5F0E8; --text-muted: #9A8A6A;
+}
+
+.booking-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #080806 0%, #0f0e08 50%, #080806 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 24px; position: relative;
+}
+
+.back-btn {
+  position: fixed; top: 24px; left: 24px; z-index: 50;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(202,138,4,0.08); border: 1px solid rgba(202,138,4,0.2);
+  color: var(--gold-muted); border-radius: 2px; padding: 10px 16px;
+  font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.back-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+.booking-wrapper {
+  display: grid; grid-template-columns: 1fr 1.2fr; max-width: 960px; width: 100%;
+  background: #0d0c08; border: 1px solid rgba(202,138,4,0.12); border-radius: 4px;
+  overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+}
+
+/* Left */
+.booking-left {
+  background: #111109; padding: 56px 40px;
+  display: flex; flex-direction: column; gap: 20px; border-right: 1px solid rgba(202,138,4,0.1);
+}
+
+.booking-brand {
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase;
+}
+
+.booking-left h1 {
+  font-family: 'Bodoni Moda', serif; font-size: 32px; font-weight: 500; color: var(--text); line-height: 1.1;
+}
+.booking-left h1 em { color: var(--gold); font-style: italic; }
+.booking-left > p { font-size: 13px; color: var(--gold-muted); line-height: 1.7; }
+
+.booking-orb-deco { margin: 8px 0; opacity: 0.85; }
+
+.booking-info-list { display: flex; flex-direction: column; gap: 10px; }
+.booking-info-item { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--gold-muted); line-height: 1.5; }
+
+/* Right */
+.booking-right { padding: 48px 40px 56px; display: flex; flex-direction: column; gap: 24px; }
+
+.progress-bar-track { height: 2px; background: rgba(202,138,4,0.12); border-radius: 1px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #CA8A04, #D4AF37); border-radius: 1px; }
+
+.steps-indicator { display: flex; gap: 0; }
+.step-dot {
+  display: flex; align-items: center; gap: 8px; flex: 1;
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #4A3200;
+}
+.dot-circle {
+  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(202,138,4,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0;
+}
+.step-dot.active .dot-circle { border-color: var(--gold); color: var(--gold); }
+.step-dot.active { color: var(--gold-muted); }
+.step-dot.done .dot-circle { background: var(--gold); border-color: var(--gold); color: #080806; }
+
+.form-step { display: flex; flex-direction: column; gap: 16px; }
+.form-step h2 { font-family: 'Bodoni Moda', serif; font-size: 24px; font-weight: 500; color: var(--text); }
+.step-sub { font-size: 13px; color: var(--gold-muted); margin-top: -4px; }
+
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+.input-group label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #6B5C3E; }
+.input-group input {
+  background: rgba(202,138,4,0.05); border: 1.5px solid rgba(202,138,4,0.15);
+  border-radius: 2px; color: var(--text); padding: 12px 14px;
+  font-family: 'Jost', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s;
+}
+.input-group input:focus { border-color: var(--gold); }
+.input-group input::placeholder { color: #4A3200; }
+.input-group.error input { border-color: #b45309; }
+.error-msg { font-size: 12px; color: #b45309; }
+
+.btn-book {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(135deg, #CA8A04, #92650A);
+  color: #F5F0E8; border: none; border-radius: 2px;
+  padding: 14px 28px; font-family: 'Jost', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  cursor: pointer; margin-top: 8px; transition: all 0.2s;
+  box-shadow: 0 8px 24px rgba(202,138,4,0.25);
+}
+.btn-book:hover { box-shadow: 0 12px 40px rgba(202,138,4,0.45); transform: translateY(-1px); }
+
+.btn-book.btn-secondary {
+  background: transparent; border: 1.5px solid rgba(202,138,4,0.25);
+  color: var(--gold-muted); box-shadow: none; font-size: 11px;
+}
+.btn-book.btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: none; box-shadow: none; }
+
+/* Service picker */
+.service-picker { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+.service-option {
+  position: relative; background: rgba(202,138,4,0.04);
+  border: 1.5px solid rgba(202,138,4,0.12); border-radius: 2px;
+  padding: 14px 16px; text-align: left; cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.service-option:hover { border-color: rgba(202,138,4,0.35); }
+.service-option.selected { border-color: var(--gold); background: rgba(202,138,4,0.1); }
+
+.tag-popular {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--gold); color: #080806; border-radius: 2px; padding: 2px 6px;
+}
+
+.s-name { font-family: 'Bodoni Moda', serif; font-size: 15px; color: var(--text); font-weight: 500; }
+.s-desc { font-size: 11px; color: var(--gold-muted); }
+.s-price { font-size: 16px; font-weight: 700; color: var(--gold); font-family: 'Jost', sans-serif; margin-top: 4px; }
+
+/* Calendar */
+.calendar { background: rgba(202,138,4,0.03); border: 1px solid rgba(202,138,4,0.1); border-radius: 2px; padding: 16px; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-month { font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+.cal-nav { background: none; border: 1px solid rgba(202,138,4,0.2); color: var(--gold-muted); border-radius: 2px; padding: 4px 8px; cursor: pointer; transition: all 0.2s; }
+.cal-nav:hover { border-color: var(--gold); color: var(--gold); }
+
+.cal-days-header { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
+.cal-days-header span { text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4A3200; padding: 4px 0; }
+
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-day {
+  aspect-ratio: 1; border-radius: 2px; border: none; background: transparent;
+  font-family: 'Jost', sans-serif; font-size: 12px; cursor: pointer;
+  color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.cal-day:hover:not(.past):not(.selected) { background: rgba(202,138,4,0.12); color: var(--gold); }
+.cal-day.today:not(.selected) { border: 1px solid rgba(202,138,4,0.3); color: var(--gold); }
+.cal-day.selected { background: var(--gold); color: #080806; font-weight: 700; }
+.cal-day.past { color: #2A2010; cursor: not-allowed; }
+.cal-day.day-off { color: #3A3020; cursor: not-allowed; }
+
+.time-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #6B5C3E; margin-top: 4px; }
+.no-times-msg { font-size: 13px; color: #6B5C3E; font-style: italic; }
+
+.time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.time-btn {
+  background: rgba(202,138,4,0.05); border: 1px solid rgba(202,138,4,0.15);
+  border-radius: 2px; color: var(--text-muted); font-family: 'Jost', sans-serif;
+  font-size: 12px; font-weight: 500; padding: 10px 4px; cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.time-btn:hover { border-color: rgba(202,138,4,0.4); color: var(--gold); }
+.time-btn.selected { background: rgba(202,138,4,0.15); border-color: var(--gold); color: var(--gold); font-weight: 700; }
+
+/* Success */
+.success-box {
+  max-width: 440px; width: 100%;
+  background: #0d0c08; border: 1px solid rgba(202,138,4,0.2);
+  border-radius: 4px; padding: 48px 40px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center;
+}
+
+.success-orb { filter: drop-shadow(0 0 30px rgba(202,138,4,0.4)); }
+
+.success-box h2 {
+  font-family: 'Bodoni Moda', serif; font-size: 28px; font-weight: 500; color: var(--text); line-height: 1.2;
+}
+
+.success-details { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+.success-row { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-muted); }
+.success-icon { color: var(--gold); font-size: 12px; width: 16px; text-align: center; }
+
+.success-sub { font-size: 13px; color: #6B5C3E; font-style: italic; }
+
+@media (max-width: 768px) {
+  .booking-wrapper { grid-template-columns: 1fr; max-width: 480px; }
+  .booking-left { padding: 36px 28px 24px; }
+  .booking-orb-deco { display: none; }
+  .booking-right { padding: 32px 24px 44px; }
+  .service-picker { grid-template-columns: 1fr; }
+  .time-grid { grid-template-columns: repeat(3, 1fr); }
+  .steps-indicator span { display: none; }
+}
