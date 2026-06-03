@@ -555,7 +555,7 @@ export default function Landing() {
           <a href="#services">Services</a>
           <a href="#reviews">Reviews</a>
         </div>
-        <p className="footer-copy">© 2025 Barberz Blvd — All Rights Reserved.</p>
+        <p className="footer-copy">© 2020 Barberz Blvd — All Rights Reserved.</p>
         <button className="owner-login-btn" onClick={() => navigate('/owner')}>Owner Login</button>
       </footer>
     </div>
