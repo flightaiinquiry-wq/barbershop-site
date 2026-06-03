@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-/* Black vignette edges */
+/* Black vignette */
 .hb-root::after {
   content: '';
   position: absolute;
@@ -17,9 +17,9 @@
   pointer-events: none;
   z-index: 10;
   background:
-    radial-gradient(ellipse 72% 68% at 50% 50%, transparent 38%, #050503 92%),
-    linear-gradient(to bottom, #050503 0%, transparent 14%, transparent 86%, #050503 100%),
-    linear-gradient(to right,  #050503 0%, transparent 10%, transparent 90%, #050503 100%);
+    radial-gradient(ellipse 70% 65% at 50% 50%, transparent 35%, #050503 90%),
+    linear-gradient(to bottom, #050503 0%, transparent 15%, transparent 85%, #050503 100%),
+    linear-gradient(to right,  #050503 0%, transparent 12%, transparent 88%, #050503 100%);
 }
 
 .hb-canvas {
@@ -29,7 +29,7 @@
   height: 100% !important;
 }
 
-/* ── Text overlay ── */
+/* ── Overlay ── */
 .hb-overlay {
   position: relative;
   z-index: 20;
@@ -38,85 +38,74 @@
   align-items: center;
   gap: 0;
   text-align: center;
-  padding: 0 24px;
 }
 
-.hb-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  margin-bottom: 28px;
-}
-
-.hb-word {
-  display: block;
-  font-family: 'Bodoni Moda', serif;
-  font-size: clamp(36px, 7.5vw, 88px);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.hb-brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.9;
+  letter-spacing: 0.12em;
   color: #CA8A04;
   text-shadow:
-    0 0 20px rgba(212, 175, 55, 0.9),
-    0 0 60px rgba(212, 175, 55, 0.5),
-    0 0 120px rgba(212, 175, 55, 0.2);
+    0 0 30px rgba(212, 175, 55, 1),
+    0 0 80px rgba(212, 175, 55, 0.5),
+    0 0 160px rgba(212, 175, 55, 0.2);
   opacity: 0;
-  transform: translateY(22px);
+  transform: scaleY(0.85) translateY(10px);
   transition: none;
 }
 
-.hb-word.hb-in {
-  animation: hb-word-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.hb-brand-name.hb-in {
+  animation: hb-brand-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes hb-word-in {
-  to { opacity: 1; transform: translateY(0); }
+@keyframes hb-brand-in {
+  to { opacity: 1; transform: scaleY(1) translateY(0); }
 }
 
-.hb-sub {
+.hb-brand-sub {
   font-family: 'Jost', sans-serif;
-  font-size: clamp(13px, 2vw, 20px);
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: clamp(11px, 2vw, 18px);
+  font-weight: 300;
+  letter-spacing: 0.65em;
   text-transform: uppercase;
-  color: #9A8A6A;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: none;
+  color: #6B5C3E;
+  margin-top: 4px;
   margin-bottom: 52px;
+  opacity: 0;
+  transition: none;
 }
 
-.hb-sub.hb-sub-in {
-  animation: hb-sub-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.hb-brand-sub.hb-in {
+  animation: hb-sub-in 0.7s ease forwards;
 }
 
 @keyframes hb-sub-in {
-  to { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; }
 }
 
 .hb-btn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #CA8A04, #92650A);
-  color: #F5F0E8;
-  border: none;
-  border-radius: 4px;
-  padding: 14px 36px;
+  background: transparent;
+  border: 1.5px solid #CA8A04;
+  color: #CA8A04;
+  border-radius: 2px;
+  padding: 12px 48px;
   font-family: 'Jost', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 0 32px rgba(212, 175, 55, 0.4);
-  transition: box-shadow 0.3s, transform 0.2s;
+  transition: all 0.3s;
 }
 
 .hb-btn:hover {
-  box-shadow: 0 0 56px rgba(212, 175, 55, 0.7);
-  transform: translateY(-2px);
+  background: #CA8A04;
+  color: #050503;
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
 }
 
 /* ── Fallback ── */
@@ -130,33 +119,21 @@
   justify-content: center;
 }
 
-.hb-fb-logo {
+.hb-fb-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 96px;
+  letter-spacing: 0.12em;
+  color: #CA8A04;
+  line-height: 0.9;
+  text-align: center;
+}
+
+.hb-fb-sub-brand {
   font-family: 'Jost', sans-serif;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  color: #CA8A04;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.hb-fb-title {
-  font-family: 'Bodoni Moda', serif;
-  font-size: clamp(40px, 8vw, 80px);
-  color: #F5F0E8;
-  font-weight: 500;
-  line-height: 1.05;
-  margin-bottom: 16px;
-}
-
-.hb-fb-title em {
-  color: #CA8A04;
-  font-style: italic;
-}
-
-.hb-fb-sub {
-  font-family: 'Jost', sans-serif;
-  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.6em;
   color: #6B5C3E;
-  letter-spacing: 0.1em;
+  text-align: center;
+  margin-top: 8px;
 }

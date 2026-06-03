@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { addBooking, getAvailableTimesForDate, getDefaultTimes, isDateUnavailable, getBlockedWeekdays } from '../lib/store'
+import { addBooking, getAvailableTimesForDate, getDefaultTimes, isDateUnavailable, getBlockedWeekdays, addReview } from '../lib/store'
+import { EmojiRating } from '../components/ui/EmojiRating'
+import { Balloons } from '../components/ui/Balloons'
 import './Booking.css'
 
 const SERVICES = [
@@ -77,9 +79,14 @@ export default function Booking() {
   const navigate = useNavigate()
   const [step, setStep]   = useState(1)
   const [form, setForm]   = useState({ name: '', phone: '', service: '', date: null, time: '' })
-  const [submitted, setSubmitted] = useState(false)
-  const [errors, setErrors]   = useState({})
+  const [submitted, setSubmitted]   = useState(false)
+  const [errors, setErrors]         = useState({})
   const [availableTimes, setAvailableTimes] = useState(getDefaultTimes)
+  const [visitType, setVisitType]   = useState(null)   // null | 'first' | 'returning'
+  const [reviewRating, setReviewRating]   = useState(0)
+  const [reviewComment, setReviewComment] = useState('')
+  const [reviewDone, setReviewDone] = useState(false)
+  const balloonsRef = useRef(null)
 
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
@@ -102,7 +109,22 @@ export default function Booking() {
   const next   = () => { if (validate()) setStep(s => s + 1) }
   const submit = () => { if (validate()) { addBooking(form); setSubmitted(true) } }
 
+  const submitReview = () => {
+    if (reviewRating === 0) return
+    const labels = ['Terrible', 'Poor', 'Okay', 'Good', 'Amazing']
+    addReview({
+      name: form.name,
+      service: SERVICES.find(s => s.id === form.service)?.label ?? form.service,
+      rating: reviewRating,
+      ratingLabel: labels[reviewRating - 1],
+      comment: reviewComment,
+    })
+    setReviewDone(true)
+  }
+
   if (submitted) {
+    const showActions = visitType === 'first' || reviewDone
+
     return (
       <div className="booking-page">
         <motion.div className="success-box"
@@ -131,11 +153,15 @@ export default function Booking() {
               })}
             </svg>
           </div>
-          <h2>You're Booked,<br />{form.name.split(' ')[0]}.</h2>
+
+          {reviewDone
+            ? <h2>Thanks,<br />{form.name.split(' ')[0]}. 🙌</h2>
+            : <h2>You're Booked,<br />{form.name.split(' ')[0]}.</h2>
+          }
 
           <div className="success-details">
             {[
-              { icon: '✦', text: `${SERVICES.find(s=>s.id===form.service)?.label}` },
+              { icon: '✦', text: SERVICES.find(s => s.id === form.service)?.label },
               { icon: '◈', text: `${form.date ? `${MONTHS[form.date.month]} ${form.date.day}, ${form.date.year}` : ''} at ${form.time}` },
               { icon: '◷', text: `~${SERVICE_DURATION[form.service]} min` },
             ].map((row, i) => (
@@ -146,8 +172,65 @@ export default function Booking() {
             ))}
           </div>
 
-          <p className="success-sub">We'll see you in the chair. Come sharp.</p>
-          <button className="btn-book btn-secondary" onClick={() => navigate('/')}>Back to Home</button>
+          <AnimatePresence mode="wait">
+            {/* Ask first visit */}
+            {visitType === null && (
+              <motion.div key="ask" className="first-visit-section"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28 }}
+              >
+                <p className="first-visit-q">First time at Obsidian?</p>
+                <div className="first-visit-btns">
+                  <button className="btn-first" onClick={() => {
+                    balloonsRef.current?.launchAnimation()
+                    setVisitType('first')
+                  }}>
+                    Yes, first visit!
+                  </button>
+                  <button className="btn-returning" onClick={() => setVisitType('returning')}>
+                    No, I'm back
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Review form */}
+            {visitType === 'returning' && !reviewDone && (
+              <motion.div key="review" className="review-section"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28 }}
+              >
+                <p className="review-heading">How was your last cut?</p>
+                <EmojiRating onChange={setReviewRating} />
+                <textarea className="review-textarea" rows={3}
+                  placeholder="Tell us more (optional)…"
+                  value={reviewComment}
+                  onChange={e => setReviewComment(e.target.value)}
+                />
+                <button className="btn-book" onClick={submitReview}
+                  disabled={reviewRating === 0}
+                  style={{ opacity: reviewRating === 0 ? 0.45 : 1 }}
+                >
+                  Submit Review
+                </button>
+              </motion.div>
+            )}
+
+            {/* Final actions */}
+            {showActions && (
+              <motion.div key="done"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.28 }}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, width: '100%' }}
+              >
+                {reviewDone && <p className="review-thanks">See you in the chair, legend.</p>}
+                {!reviewDone && <p className="success-sub">We'll see you in the chair. Come sharp.</p>}
+                <button className="btn-book btn-secondary" onClick={() => navigate('/')}>Back to Home</button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <Balloons ref={balloonsRef} />
         </motion.div>
       </div>
     )

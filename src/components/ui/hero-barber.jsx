@@ -16,7 +16,7 @@ const DEPTHMAP   = { src: 'https://i.postimg.cc/2SHKQh2q/raw-4.webp' }
 
 extend(THREE)
 
-function PostProcessing({ strength = 0.8, threshold = 1.2 }) {
+function PostProcessing({ strength = 0.9, threshold = 1.2 }) {
   const { gl, scene, camera } = useThree()
   const progressRef = useRef({ value: 0 })
 
@@ -29,22 +29,16 @@ function PostProcessing({ strength = 0.8, threshold = 1.2 }) {
     const uScan = uniform(0)
     progressRef.current = uScan
 
-    const scanLine = smoothstep(0, float(0.05), abs(uv().y.sub(float(uScan.value))))
-    // Gold scan line
-    const goldOverlay = vec3(1.0, 0.78, 0.0).mul(oneMinus(scanLine)).mul(0.9)
-
-    const withScan = mix(
-      sceneColor,
-      add(sceneColor, goldOverlay),
-      smoothstep(0.9, 1.0, oneMinus(scanLine))
-    )
+    const scanLine    = smoothstep(0, float(0.04), abs(uv().y.sub(float(uScan.value))))
+    const goldOverlay = vec3(1.0, 0.78, 0.0).mul(oneMinus(scanLine)).mul(0.8)
+    const withScan    = mix(sceneColor, add(sceneColor, goldOverlay), smoothstep(0.9, 1.0, oneMinus(scanLine)))
 
     pp.outputNode = withScan.add(bloomPass)
     return pp
   }, [camera, gl, scene, strength, threshold])
 
   useFrame(({ clock }) => {
-    progressRef.current.value = Math.sin(clock.getElapsedTime() * 0.45) * 0.5 + 0.5
+    progressRef.current.value = Math.sin(clock.getElapsedTime() * 0.4) * 0.5 + 0.5
     render.renderAsync()
   }, 1)
 
@@ -55,7 +49,7 @@ const W = 300, H = 300
 
 function Scene() {
   const [rawMap, depthMap] = useTexture([TEXTUREMAP.src, DEPTHMAP.src])
-  const meshRef = useRef(null)
+  const meshRef  = useRef(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => { if (rawMap && depthMap) setVisible(true) }, [rawMap, depthMap])
@@ -65,24 +59,27 @@ function Scene() {
     const uProgress = uniform(0)
 
     const tDepth = texture(depthMap)
-    const tRaw   = texture(rawMap, uv().add(tDepth.r.mul(uPointer).mul(0.01)))
+    const tRaw   = texture(rawMap, uv().add(tDepth.r.mul(uPointer).mul(0.015)))
 
-    // Recolor → warm gold/amber tones
+    // Gold/amber tone — warmer than lash site
     const luma = tRaw.r.mul(0.5).add(tRaw.g.mul(0.3)).add(tRaw.b.mul(0.2))
-    const tMap = vec3(luma.mul(0.9), luma.mul(0.68), luma.mul(0.0))
+    const tMap = vec3(luma.mul(0.88), luma.mul(0.66), luma.mul(0.0))
 
     const aspect  = float(W).div(H)
     const tUv     = vec2(uv().x.mul(aspect), uv().y)
-    const tiling  = vec2(120.0)
+
+    // Sparser, larger dots — visually distinct from lash site's tight grid
+    const tiling  = vec2(70.0)
     const tiledUv = mod(tUv.mul(tiling), 2.0).sub(1.0)
 
     const brightness = mx_cell_noise_float(tUv.mul(tiling).div(2))
     const dist = float(tiledUv.length())
-    const dot  = float(smoothstep(0.5, 0.49, dist)).mul(brightness)
+    // Bigger, softer dots
+    const dot  = float(smoothstep(0.5, 0.3, dist)).mul(brightness)
 
-    const flow = oneMinus(smoothstep(float(0), float(0.02), abs(tDepth.r.sub(uProgress))))
+    const flow = oneMinus(smoothstep(float(0), float(0.025), abs(tDepth.r.sub(uProgress))))
 
-    // Gold dot mask — R and G both HDR, B=0 → warm amber/gold bloom
+    // Gold neon — R and G in HDR → warm amber bloom
     const mask  = dot.mul(flow).mul(vec3(10.0, 7.8, 0.0))
     const final = blendScreen(tMap, mask)
 
@@ -97,7 +94,7 @@ function Scene() {
   const [w, h] = useAspect(W, H)
 
   useFrame(({ clock }) => {
-    uniforms.uProgress.value = Math.sin(clock.getElapsedTime() * 0.45) * 0.5 + 0.5
+    uniforms.uProgress.value = Math.sin(clock.getElapsedTime() * 0.4) * 0.5 + 0.5
     const mat = meshRef.current?.material
     if (mat && 'opacity' in mat)
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, visible ? 1 : 0, 0.07)
@@ -105,31 +102,25 @@ function Scene() {
 
   useFrame(({ pointer }) => { uniforms.uPointer.value = pointer })
 
+  // Slightly different scale ratio from lash site
   return (
-    <mesh ref={meshRef} scale={[w * 0.4, h * 0.4, 1]} material={material}>
+    <mesh ref={meshRef} scale={[w * 0.38, h * 0.44, 1]} material={material}>
       <planeGeometry />
     </mesh>
   )
 }
 
 function Overlay({ onComplete }) {
-  const words   = ['Sharp.', 'Precise.', 'Legendary.']
-  const sub     = 'Premium cuts. Masterful technique. Zero compromise.'
-  const [shown,   setShown]   = useState(0)
-  const [subOn,   setSubOn]   = useState(false)
-  const [btnOn,   setBtnOn]   = useState(false)
-  const [delays]  = useState(() => words.map(() => Math.random() * 0.07))
-  const [subDelay] = useState(() => Math.random() * 0.1)
+  const [nameIn,   setNameIn]   = useState(false)
+  const [subIn,    setSubIn]    = useState(false)
+  const [btnIn,    setBtnIn]    = useState(false)
 
   useEffect(() => {
-    if (shown < words.length) {
-      const t = setTimeout(() => setShown(n => n + 1), 550)
-      return () => clearTimeout(t)
-    }
-    const t1 = setTimeout(() => setSubOn(true),  500)
-    const t2 = setTimeout(() => setBtnOn(true), 1400)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
-  }, [shown])
+    const t1 = setTimeout(() => setNameIn(true),  400)
+    const t2 = setTimeout(() => setSubIn(true),  1100)
+    const t3 = setTimeout(() => setBtnIn(true),  1900)
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+  }, [])
 
   useEffect(() => {
     const t = setTimeout(onComplete, 7000)
@@ -138,36 +129,21 @@ function Overlay({ onComplete }) {
 
   return (
     <div className="hb-overlay">
-      <div className="hb-title">
-        {words.map((w, i) => (
-          <span
-            key={i}
-            className={`hb-word ${i < shown ? 'hb-in' : ''}`}
-            style={{ animationDelay: `${i * 0.12 + delays[i]}s` }}
-          >
-            {w}
-          </span>
-        ))}
+      <div className={`hb-brand-name ${nameIn ? 'hb-in' : ''}`}>
+        OBSIDIAN
       </div>
-      <p
-        className={`hb-sub ${subOn ? 'hb-sub-in' : ''}`}
-        style={{ animationDelay: `${words.length * 0.12 + 0.18 + subDelay}s` }}
-      >
-        {sub}
-      </p>
-      {btnOn && (
+      <div className={`hb-brand-sub ${subIn ? 'hb-in' : ''}`}>
+        BARBERSHOP
+      </div>
+      {btnIn && (
         <motion.button
           className="hb-btn"
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
+          transition={{ duration: 0.5 }}
           onClick={onComplete}
         >
-          Enter the Shop
-          <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
-            <path d="M11 5V17" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M6 12L11 17L16 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
+          Enter
         </motion.button>
       )}
     </div>
@@ -176,7 +152,7 @@ function Overlay({ onComplete }) {
 
 function Fallback({ onComplete }) {
   useEffect(() => {
-    const t = setTimeout(onComplete, 3500)
+    const t = setTimeout(onComplete, 3000)
     return () => clearTimeout(t)
   }, [onComplete])
 
@@ -185,13 +161,10 @@ function Fallback({ onComplete }) {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }} style={{ textAlign: 'center' }}
-      >
-        <div className="hb-fb-logo">✦ OBSIDIAN</div>
-        <h1 className="hb-fb-title">Sharp.<br /><em>Legendary.</em></h1>
-        <p className="hb-fb-sub">Premium cuts. Masterful technique.</p>
-      </motion.div>
+      <div style={{ textAlign: 'center' }}>
+        <div className="hb-fb-brand">OBSIDIAN</div>
+        <div className="hb-fb-sub-brand">BARBERSHOP</div>
+      </div>
     </motion.div>
   )
 }
@@ -219,7 +192,7 @@ export default function BarberIntro({ onComplete }) {
           return r
         }}
       >
-        <PostProcessing strength={0.8} threshold={1.2} />
+        <PostProcessing strength={0.9} threshold={1.2} />
         <Scene />
       </Canvas>
     </div>
