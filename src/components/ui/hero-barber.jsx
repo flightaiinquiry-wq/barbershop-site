@@ -27,12 +27,11 @@ function PostProcessing({ strength = 0.9, threshold = 0.7 }) {
 function Trimmer() {
   const groupRef = useRef()
 
-  useFrame(({ clock, pointer }) => {
+  useFrame(({ clock }) => {
     if (!groupRef.current) return
     const t = clock.getElapsedTime()
     groupRef.current.position.y = Math.sin(t * 0.65) * 0.06
-    groupRef.current.rotation.y = t * 0.28 + pointer.x * 0.3
-    groupRef.current.rotation.x = pointer.y * 0.12
+    groupRef.current.rotation.y = t * 0.28
   })
 
   // ── Body profile via LatheGeometry ──
