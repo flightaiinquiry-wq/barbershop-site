@@ -7,12 +7,13 @@ import { Balloons } from '../components/ui/Balloons'
 import './Booking.css'
 
 const SERVICES = [
-  { id: 'classic',   label: 'Classic Cut',      price: '$35',  desc: 'Timeless shape & finish' },
-  { id: 'fade',      label: 'Fade',              price: '$45',  desc: 'Low, mid, or high fade', popular: true },
-  { id: 'beard',     label: 'Beard Sculpt',      price: '$30',  desc: 'Precision shaping & lining' },
-  { id: 'shave',     label: 'Hot Towel Shave',   price: '$55',  desc: 'Straight-razor ritual' },
-  { id: 'combo',     label: 'Hair + Beard',      price: '$70',  desc: 'Full service combo' },
-  { id: 'kids',      label: "Kids Cut",          price: '$25',  desc: 'Ages 12 & under' },
+  { id: 'haircut_facial', label: 'Haircut + Facial Hair', price: '$40', desc: 'Full cut with facial hair grooming', popular: true },
+  { id: 'adult_cut',      label: 'Adult Haircut',          price: '$25', desc: 'Clean, precise haircut' },
+  { id: 'kids_cut',       label: 'Kids Haircut',           price: '$25', desc: 'For the young ones' },
+  { id: 'lining_facial',  label: 'Lining & Facial Hair',   price: '$15', desc: 'Sharp lines + facial hair' },
+  { id: 'facial_trim',    label: 'Facial Hair Lining/Trim',price: '$15', desc: 'Beard and mustache shaping' },
+  { id: 'lineup',         label: 'Line Up',                price: '$15', desc: 'Clean edges only' },
+  { id: 'hair_dye',       label: 'Hair Dye',               price: '$15', desc: 'Color touch-up service' },
 ]
 
 const SERVICE_DURATION = { classic: 45, fade: 60, beard: 30, shave: 45, combo: 75, kids: 35 }

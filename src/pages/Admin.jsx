@@ -14,7 +14,15 @@ import {
 } from '../lib/store'
 import './Admin.css'
 
-const SERVICES = { classic:'Classic Cut', fade:'Fade', beard:'Beard Sculpt', shave:'Hot Towel Shave', combo:'Hair + Beard', kids:"Kids Cut" }
+const SERVICES = {
+  haircut_facial: 'Haircut + Facial Hair',
+  adult_cut:      'Adult Haircut',
+  kids_cut:       'Kids Haircut',
+  lining_facial:  'Lining & Facial Hair',
+  facial_trim:    'Facial Hair Lining/Trim',
+  lineup:         'Line Up',
+  hair_dye:       'Hair Dye',
+}
 const MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December']
 const RATING_EMOJIS = ['😔','😕','😐','🙂','😍']
@@ -37,7 +45,7 @@ function PinScreen({ onSuccess }) {
 
   return (
     <div className="pin-screen">
-      <div className="pin-brand">✦ OBSIDIAN</div>
+      <div className="pin-brand">✦ BARBERZ BLVD</div>
       <h2>Owner Access</h2>
       <p>Enter your 4-digit code</p>
       <motion.div className={`pin-dots ${error ? 'pin-error' : ''}`}
@@ -449,7 +457,7 @@ export default function Admin() {
   return (
     <div className="admin-page">
       <header className="admin-header">
-        <div className="admin-logo">✦ OBSIDIAN <span>Owner Dashboard</span></div>
+        <div className="admin-logo">✦ BARBERZ BLVD <span>Owner Dashboard</span></div>
         <button className="btn-logout" onClick={() => setAuthed(false)}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Lock

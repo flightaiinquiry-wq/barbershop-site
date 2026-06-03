@@ -119,6 +119,27 @@ function ServiceCard({ title, desc, price, tag, delay, icon }) {
   )
 }
 
+/* ── BSB circular badge logo ── */
+function BsbLogo({ size = 44 }) {
+  const c = '#CA8A04'
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="47" stroke={c} strokeWidth="2.5"/>
+      <circle cx="50" cy="50" r="38" stroke={c} strokeWidth="1" strokeOpacity="0.45"/>
+      <defs>
+        <path id="bsb-arc" d="M 14,50 A 36,36 0 1,1 86,50"/>
+      </defs>
+      <text fill={c} fontSize="7.2" fontWeight="700" letterSpacing="1.8" fontFamily="Jost,sans-serif">
+        <textPath href="#bsb-arc" startOffset="4%">BARBERZ BOULEVARD BARBERSHOP</textPath>
+      </text>
+      <text x="50" y="56" textAnchor="middle" fill={c} fontSize="21" fontWeight="800"
+        fontFamily="'Bodoni Moda',serif" letterSpacing="1">BSB</text>
+      <text x="50" y="68" textAnchor="middle" fill={c} fontSize="6" fontWeight="600"
+        letterSpacing="2.5" fontFamily="Jost,sans-serif">— EST. 2020 —</text>
+    </svg>
+  )
+}
+
 /* ── Barber card ── */
 function BarberCard({ name, role, specialty, delay }) {
   return (
@@ -178,35 +199,43 @@ export default function Landing() {
   const heroParallax = useTransform(scrollY, [0, 500], [0, -60])
 
   const services = [
+    // ── Hair Service ──
     {
-      title: 'Classic Cut', price: '$35', tag: null, delay: 0,
-      desc: 'Timeless shape and finish. Scissor or clipper work tailored to your head shape.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="#CA8A04" strokeWidth="1.2" /><line x1="12" y1="12" x2="28" y2="28" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" /><line x1="28" y1="12" x2="12" y2="28" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" /><circle cx="20" cy="20" r="3" fill="#CA8A04" /></svg>,
+      title: 'Haircut + Facial Hair', price: '$40', tag: 'Popular', delay: 0,
+      desc: 'Full cut with facial hair grooming included. Our most complete hair service.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="14" r="7" stroke="#CA8A04" strokeWidth="1.2"/><path d="M10,30 Q14,22 20,22 Q26,22 30,30" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M14,26 Q17,29 20,29 Q23,29 26,26" stroke="#CA8A04" strokeWidth="1" fill="none" strokeLinecap="round"/></svg>,
     },
     {
-      title: 'Fade', price: '$45', tag: 'Most Popular', delay: 0.1,
-      desc: 'Low, mid, or high fade executed with precision. Clean edges every time.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><path d="M8,32 Q14,8 20,8 Q26,8 32,32" stroke="#CA8A04" strokeWidth="1.5" fill="none" strokeLinecap="round" /><line x1="8" y1="32" x2="32" y2="32" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" /></svg>,
+      title: 'Adult Haircut', price: '$25', tag: null, delay: 0.08,
+      desc: 'Clean, precise cut tailored to your head shape and style.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><path d="M8,32 Q14,8 20,8 Q26,8 32,32" stroke="#CA8A04" strokeWidth="1.5" fill="none" strokeLinecap="round"/><line x1="8" y1="32" x2="32" y2="32" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round"/></svg>,
     },
     {
-      title: 'Beard Sculpt', price: '$30', tag: null, delay: 0.2,
-      desc: 'Define your jawline. Precision shaping and lining to frame your face.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><path d="M10,16 Q20,28 30,16" stroke="#CA8A04" strokeWidth="1.5" fill="none" strokeLinecap="round" /><path d="M10,16 L10,26 Q20,34 30,26 L30,16" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round" /></svg>,
+      title: 'Kids Haircut', price: '$25', tag: null, delay: 0.16,
+      desc: 'Patient and fun cuts for the little ones. Every kid leaves proud.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="9" stroke="#CA8A04" strokeWidth="1.2"/><path d="M12,32 Q16,26 20,26 Q24,26 28,32" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round"/><line x1="20" y1="7" x2="20" y2="5" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+    },
+    // ── Shave Service ──
+    {
+      title: 'Lining & Facial Hair', price: '$15', tag: null, delay: 0.24,
+      desc: 'Sharp lines with complete facial hair cleanup. Crisp and defined.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><path d="M10,16 Q20,28 30,16" stroke="#CA8A04" strokeWidth="1.5" fill="none" strokeLinecap="round"/><path d="M10,16 L10,26 Q20,34 30,26 L30,16" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round"/></svg>,
     },
     {
-      title: 'Hot Towel Shave', price: '$55', tag: 'Signature', delay: 0.3,
-      desc: 'Traditional straight-razor shave with hot towel prep. The ultimate ritual.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="18" width="24" height="10" rx="2" stroke="#CA8A04" strokeWidth="1.2" /><line x1="8" y1="23" x2="32" y2="23" stroke="#CA8A04" strokeWidth="0.8" strokeOpacity="0.5" /><path d="M14,18 L14,14 Q14,10 20,10 Q26,10 26,14 L26,18" stroke="#CA8A04" strokeWidth="1.2" fill="none" /></svg>,
+      title: 'Facial Hair Lining/Trim', price: '$15', tag: null, delay: 0.32,
+      desc: 'Precision beard and mustache shaping to frame your face perfectly.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="18" width="24" height="10" rx="2" stroke="#CA8A04" strokeWidth="1.2"/><line x1="8" y1="23" x2="32" y2="23" stroke="#CA8A04" strokeWidth="0.8" strokeOpacity="0.5"/><path d="M14,18 L14,14 Q14,10 20,10 Q26,10 26,14 L26,18" stroke="#CA8A04" strokeWidth="1.2" fill="none"/></svg>,
     },
     {
-      title: 'Hair + Beard', price: '$70', tag: 'Best Value', delay: 0.4,
-      desc: 'Full service combo. Cut, shape, and edge — walk out completely transformed.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="14" r="8" stroke="#CA8A04" strokeWidth="1.2" /><path d="M10,30 Q14,24 20,24 Q26,24 30,30" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round" /></svg>,
+      title: 'Line Up', price: '$15', tag: null, delay: 0.40,
+      desc: 'Clean edges and crisp hairline — no full cut, just sharp lines.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><line x1="8" y1="20" x2="32" y2="20" stroke="#CA8A04" strokeWidth="2" strokeLinecap="round"/><line x1="8" y1="26" x2="32" y2="26" stroke="#CA8A04" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.5"/><circle cx="8" cy="20" r="2.5" fill="#CA8A04"/><circle cx="32" cy="20" r="2.5" fill="#CA8A04"/></svg>,
     },
+    // ── Hair Dye ──
     {
-      title: "Kids Cut", price: '$25', tag: null, delay: 0.5,
-      desc: 'Patient, fun, and precise. We make sure your little one sits still and leaves proud.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="9" stroke="#CA8A04" strokeWidth="1.2" /><path d="M12,32 Q16,26 20,26 Q24,26 28,32" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round" /><line x1="20" y1="7" x2="20" y2="5" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" /></svg>,
+      title: 'Hair Dye', price: '$15', tag: null, delay: 0.48,
+      desc: 'Color touch-up and full dyeing service. Ask about available shades.',
+      icon: <svg viewBox="0 0 40 40" fill="none"><path d="M20,8 C14,14 10,20 10,26 a10,10 0 0,0 20,0 C30,20 26,14 20,8Z" stroke="#CA8A04" strokeWidth="1.2" fill="none"/><line x1="20" y1="30" x2="20" y2="34" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round"/></svg>,
     },
   ]
 
@@ -226,10 +255,9 @@ export default function Landing() {
         animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? -20 : 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <div className="nav-logo">✦ OBSIDIAN</div>
+        <div className="nav-logo"><BsbLogo size={36} /><span>BARBERZ BLVD</span></div>
         <div className="nav-links">
           <a href="#services">Services</a>
-          <a href="#team">Our Barbers</a>
           <a href="#reviews">Reviews</a>
           <button className="nav-cta" onClick={() => navigate('/book')}>Book Now</button>
         </div>
@@ -243,7 +271,7 @@ export default function Landing() {
             animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 20 : 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
-            ✦ Est. 2018 — Premium Barbershop ✦
+            ✦ Est. 2020 — Full Service Luxury Barbershop ✦
           </motion.p>
           <motion.h1 className="hero-title"
             initial={{ opacity: 0, y: 30 }}
@@ -279,7 +307,7 @@ export default function Landing() {
             animate={{ opacity: showIntro ? 0 : 1 }}
             transition={{ duration: 0.7, delay: 0.9 }}
           >
-            {[['2,400+', 'Happy Clients'], ['8', 'Years Experience'], ['4', 'Master Barbers']].map(([num, label]) => (
+            {[['2,400+', 'Happy Clients'], ['Est.', '2020'], ['Luxury', 'Barbershop']].map(([num, label]) => (
               <div key={label} className="hero-stat">
                 <span className="stat-num">{num}</span>
                 <span className="stat-label">{label}</span>
@@ -440,6 +468,13 @@ export default function Landing() {
         <div className="services-grid">
           {services.map((s, i) => <ServiceCard key={s.title} {...s} />)}
         </div>
+        <motion.div className="senior-note"
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#CA8A04" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span><strong>Senior Citizen Discount</strong> — $5 off any service for clients 65 &amp; older.</span>
+        </motion.div>
       </section>
 
       {/* Barber pole divider */}
@@ -448,24 +483,6 @@ export default function Landing() {
         <div className="divider-line" />
         <BarberPole />
       </div>
-
-      {/* Team */}
-      <section id="team" className="team-section">
-        <motion.div className="section-header"
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6 }}
-        >
-          <p className="section-eyebrow">✦ The Artists ✦</p>
-          <h2>Meet Your <em>Barbers</em></h2>
-          <p className="section-sub">Masters of their craft. Each with a signature touch.</p>
-        </motion.div>
-        <div className="team-grid">
-          <BarberCard name="Marcus Cole" role="Master Barber" specialty="Skin Fades & Razor Work" delay={0} />
-          <BarberCard name="Jordan Webb" role="Senior Barber" specialty="Classic Cuts & Pompadours" delay={0.1} />
-          <BarberCard name="Elijah Stone" role="Senior Barber" specialty="Beard Sculpting & Design" delay={0.2} />
-          <BarberCard name="Darius King" role="Barber" specialty="Textured Hair & Braids" delay={0.3} />
-        </div>
-      </section>
 
       {/* Process */}
       <section className="process-section">
@@ -507,9 +524,9 @@ export default function Landing() {
           <h2>Straight from the <em>Chair</em></h2>
         </motion.div>
         <div className="testimonials-grid">
-          <Testimonial name="Aaron T." stars={5} text="Best fade I've ever had. Marcus read my face perfectly — I didn't even have to say anything. Just walked out looking like a new man." delay={0} />
-          <Testimonial name="James R." stars={5} text="The hot towel shave alone is worth the trip. Feels like a ritual. Obsidian is the only place I'll ever go." delay={0.1} />
-          <Testimonial name="Devon S." stars={5} text="My beard was a mess. Elijah shaped it in 20 minutes and I looked like I had a personal stylist. Ridiculous talent." delay={0.2} />
+          <Testimonial name="Aaron T." stars={5} text="Best cut I've ever had. He read my face perfectly — walked out looking like a new man. Won't go anywhere else." delay={0} />
+          <Testimonial name="James R." stars={5} text="The line-up and beard trim is unreal. Crisp, clean, exactly what I asked for. Barberz Blvd is the real deal." delay={0.1} />
+          <Testimonial name="Devon S." stars={5} text="My kid's haircut came out perfect and he actually sat still the whole time. Incredibly patient and talented." delay={0.2} />
         </div>
       </section>
 
@@ -521,7 +538,7 @@ export default function Landing() {
         <div className="cta-glow" />
         <p className="section-eyebrow" style={{ color: '#CA8A04' }}>✦ Reserve Your Seat ✦</p>
         <h2>Your Best Cut is <em>One Click Away</em></h2>
-        <p>Limited chairs. Don't wait until it's too late.</p>
+        <p>Appointments fill up fast. Secure your spot now.</p>
         <button className="btn-primary btn-large" onClick={() => navigate('/book')}>
           Book My Appointment
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -532,14 +549,13 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-logo">✦ OBSIDIAN BARBERSHOP</div>
-        <p>Sharp. Precise. Legendary. — Since 2018.</p>
+        <div className="footer-logo-wrap"><BsbLogo size={52} /><span className="footer-logo">BARBERZ BLVD</span></div>
+        <p>Full service luxury barber shop.</p>
         <div className="footer-links">
           <a href="#services">Services</a>
-          <a href="#team">Team</a>
           <a href="#reviews">Reviews</a>
         </div>
-        <p className="footer-copy">© 2026 Obsidian Barbershop. All rights reserved.</p>
+        <p className="footer-copy">© 2025 Barberz Blvd — All Rights Reserved.</p>
       </footer>
     </div>
   )

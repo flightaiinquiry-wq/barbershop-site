@@ -291,8 +291,8 @@ function Overlay({ onComplete }) {
 
   return (
     <div className="hb-overlay">
-      <div className={`hb-brand-name ${nameIn ? 'hb-in' : ''}`}>OBSIDIAN</div>
-      <div className={`hb-brand-sub  ${subIn  ? 'hb-in' : ''}`}>BARBERSHOP</div>
+      <div className={`hb-brand-name ${nameIn ? 'hb-in' : ''}`}>BARBERZ BLVD</div>
+      <div className={`hb-brand-sub  ${subIn  ? 'hb-in' : ''}`}>EST. 2020</div>
       {btnIn && (
         <motion.button className="hb-btn"
           initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
@@ -317,8 +317,8 @@ function Fallback({ onComplete }) {
       transition={{ duration: 0.6 }}
     >
       <div style={{ textAlign: 'center' }}>
-        <div className="hb-fb-brand">OBSIDIAN</div>
-        <div className="hb-fb-sub-brand">BARBERSHOP</div>
+        <div className="hb-fb-brand">BARBERZ BLVD</div>
+        <div className="hb-fb-sub-brand">EST. 2020</div>
       </div>
     </motion.div>
   )
