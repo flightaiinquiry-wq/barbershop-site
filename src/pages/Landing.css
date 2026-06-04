@@ -31,7 +31,7 @@
 .nav-cta:hover { background: #CA8A04; color: #080806; }
 
 /* ── Hero ── */
-.landing { overflow-x: hidden; background: #f8f6f0; }
+.landing { overflow-x: hidden; background: #f8f6f0; }\nhtml, body, #root { background: #f8f6f0 !important; color-scheme: light !important; }
 
 .hero {
   min-height: 100vh;

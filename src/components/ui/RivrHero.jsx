@@ -53,33 +53,33 @@ export default function RivrHero() {
 
   return (
     <>
-      {/* Fixed header with mix-blend-difference — text inverts against bg */}
-      <header style={{
-        position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 50,
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '24px 48px', mixBlendMode: 'difference',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <TopLogo size={34} />
-          <span style={{ color: '#fff', fontFamily: "'Jost',sans-serif", fontWeight: 800, fontSize: 14, letterSpacing: '0.22em', textTransform: 'uppercase' }}>Top Barbershop</span>
-        </div>
-        <nav style={{ display: 'flex', gap: 40 }}>
-          {['Services', 'Reviews', 'Location'].map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`}
-              style={{ color: 'rgba(255,255,255,0.8)', fontFamily: "'Jost',sans-serif", fontWeight: 500, fontSize: 15, textDecoration: 'none', transition: 'opacity 0.2s' }}>
-              {l}
-            </a>
-          ))}
-        </nav>
-        <button onClick={() => navigate('/book')}
-          style={{ background: '#fff', color: '#0D0C08', border: 'none', borderRadius: 999, padding: '10px 24px', fontFamily: "'Jost',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: '0.06em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-          Book Now
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </button>
-      </header>
+      {/* Hero floating card — header lives INSIDE so it stays within the rounded container */}
+      <section style={{ height: 'calc(100vh - 32px)', margin: 16, borderRadius: '3rem', overflow: 'hidden', position: 'relative', boxShadow: '0 25px 80px rgba(0,0,0,0.25)' }}>
 
-      {/* Hero floating card — RIVR exact sizing */}
-      <section style={{ height: 'calc(100vh - 32px)', margin: 16, borderRadius: '3rem', overflow: 'hidden', position: 'relative', boxShadow: '0 25px 80px rgba(0,0,0,0.35)' }}>
+        {/* Header — absolute inside the hero, never overflows */}
+        <header style={{
+          position: 'absolute', top: 0, left: 0, right: 0, zIndex: 50,
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '24px 40px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <TopLogo size={34} />
+            <span style={{ color: '#fff', fontFamily: "'Jost',sans-serif", fontWeight: 800, fontSize: 14, letterSpacing: '0.22em', textTransform: 'uppercase', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>Top Barbershop</span>
+          </div>
+          <nav style={{ display: 'flex', gap: 36 }}>
+            {['Services', 'Reviews', 'Location'].map(l => (
+              <a key={l} href={`#${l.toLowerCase()}`}
+                style={{ color: 'rgba(255,255,255,0.9)', fontFamily: "'Jost',sans-serif", fontWeight: 500, fontSize: 15, textDecoration: 'none', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+                {l}
+              </a>
+            ))}
+          </nav>
+          <button onClick={() => navigate('/book')}
+            style={{ background: '#fff', color: '#0D0C08', border: 'none', borderRadius: 999, padding: '10px 24px', fontFamily: "'Jost',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: '0.06em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 2px 16px rgba(0,0,0,0.2)' }}>
+            Book Now
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+        </header>
 
         {/* Video */}
         <video autoPlay muted loop playsInline
@@ -143,7 +143,7 @@ export default function RivrHero() {
         {/* Bottom-right SVG cutout — exact RIVR shape */}
         <div id="tb-corner" style={{ position: 'absolute', bottom: 0, right: 0, zIndex: 40, width: 300, height: 160, opacity: 0 }}>
           <svg style={{ position:'absolute',bottom:0,right:0 }} width="300" height="160" viewBox="0 0 300 160" fill="none">
-            <path d="M0 160H300V0C300 33.1371 273.137 60 240 60H60C26.8629 60 0 86.8629 0 120V160Z" fill="#f8f6f0"/>
+            <path d="M0 160H300V0C300 33.1371 273.137 60 240 60H60C26.8629 60 0 86.8629 0 120V160Z" fill="#f8f6f0" />
           </svg>
           <div style={{ position:'absolute',bottom:24,right:40,textAlign:'right' }}>
             <div style={{ color:'#041c44',fontWeight:700,fontSize:18,marginBottom:4,fontFamily:"'Bodoni Moda',serif" }}>Our Services</div>
