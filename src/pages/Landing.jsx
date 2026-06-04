@@ -100,7 +100,7 @@ function RazorDeco({ animate }) {
 }
 
 /* ── Service card ── */
-function ServiceCard({ title, desc, price, tag, delay, icon }) {
+function ServiceCard({ title, desc, tag, delay, icon }) {
   return (
     <motion.div
       className="service-card"
@@ -114,7 +114,6 @@ function ServiceCard({ title, desc, price, tag, delay, icon }) {
       <div className="service-icon-wrap">{icon}</div>
       <h3>{title}</h3>
       <p>{desc}</p>
-      <div className="service-price">{price}</div>
     </motion.div>
   )
 }
@@ -199,42 +198,34 @@ export default function Landing() {
   const heroParallax = useTransform(scrollY, [0, 500], [0, -60])
 
   const services = [
-    // ── Hair Service ──
     {
-      title: 'Haircut + Facial Hair', price: '$40', tag: 'Popular', delay: 0,
-      desc: 'Full cut with facial hair grooming included. Our most complete hair service.',
+      title: 'Haircut + Facial Hair', tag: 'Most Popular', delay: 0,
+      desc: 'Full haircut combined with facial hair grooming. The complete package — walk in, walk out sharp.',
       icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="14" r="7" stroke="#CA8A04" strokeWidth="1.2"/><path d="M10,30 Q14,22 20,22 Q26,22 30,30" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M14,26 Q17,29 20,29 Q23,29 26,26" stroke="#CA8A04" strokeWidth="1" fill="none" strokeLinecap="round"/></svg>,
     },
     {
-      title: 'Adult Haircut', price: '$25', tag: null, delay: 0.08,
-      desc: 'Clean, precise cut tailored to your head shape and style.',
+      title: 'Adult Haircut', tag: null, delay: 0.08,
+      desc: 'Clean, precise cut tailored to your head shape and personal style. Every time.',
       icon: <svg viewBox="0 0 40 40" fill="none"><path d="M8,32 Q14,8 20,8 Q26,8 32,32" stroke="#CA8A04" strokeWidth="1.5" fill="none" strokeLinecap="round"/><line x1="8" y1="32" x2="32" y2="32" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round"/></svg>,
     },
     {
-      title: 'Kids Haircut', price: '$25', tag: null, delay: 0.16,
-      desc: 'Patient and fun cuts for the little ones. Every kid leaves proud.',
+      title: 'Kids Haircut', tag: null, delay: 0.16,
+      desc: 'Patient, fun cuts for kids of all ages. Every child leaves looking great and feeling confident.',
       icon: <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="9" stroke="#CA8A04" strokeWidth="1.2"/><path d="M12,32 Q16,26 20,26 Q24,26 28,32" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round"/><line x1="20" y1="7" x2="20" y2="5" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round"/></svg>,
     },
-    // ── Shave Service ──
     {
-      title: 'Lining & Facial Hair', price: '$15', tag: null, delay: 0.24,
-      desc: 'Sharp lines with complete facial hair cleanup. Crisp and defined.',
+      title: 'Lining & Facial Trim', tag: null, delay: 0.24,
+      desc: 'Sharp hairline edges with full facial hair cleanup. Clean, crisp, and defined.',
       icon: <svg viewBox="0 0 40 40" fill="none"><path d="M10,16 Q20,28 30,16" stroke="#CA8A04" strokeWidth="1.5" fill="none" strokeLinecap="round"/><path d="M10,16 L10,26 Q20,34 30,26 L30,16" stroke="#CA8A04" strokeWidth="1.2" fill="none" strokeLinecap="round"/></svg>,
     },
     {
-      title: 'Facial Hair Lining/Trim', price: '$15', tag: null, delay: 0.32,
-      desc: 'Precision beard and mustache shaping to frame your face perfectly.',
-      icon: <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="18" width="24" height="10" rx="2" stroke="#CA8A04" strokeWidth="1.2"/><line x1="8" y1="23" x2="32" y2="23" stroke="#CA8A04" strokeWidth="0.8" strokeOpacity="0.5"/><path d="M14,18 L14,14 Q14,10 20,10 Q26,10 26,14 L26,18" stroke="#CA8A04" strokeWidth="1.2" fill="none"/></svg>,
-    },
-    {
-      title: 'Line Up', price: '$15', tag: null, delay: 0.40,
-      desc: 'Clean edges and crisp hairline — no full cut, just sharp lines.',
+      title: 'Line Up', tag: null, delay: 0.32,
+      desc: 'Razor-sharp edges and a crisp hairline. No full cut — just clean lines that frame your look.',
       icon: <svg viewBox="0 0 40 40" fill="none"><line x1="8" y1="20" x2="32" y2="20" stroke="#CA8A04" strokeWidth="2" strokeLinecap="round"/><line x1="8" y1="26" x2="32" y2="26" stroke="#CA8A04" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.5"/><circle cx="8" cy="20" r="2.5" fill="#CA8A04"/><circle cx="32" cy="20" r="2.5" fill="#CA8A04"/></svg>,
     },
-    // ── Hair Dye ──
     {
-      title: 'Hair Dye', price: '$15', tag: null, delay: 0.48,
-      desc: 'Color touch-up and full dyeing service. Ask about available shades.',
+      title: 'Hair Dye', tag: null, delay: 0.40,
+      desc: 'Color touch-up and full dyeing service. Ask Chino about available shades at your appointment.',
       icon: <svg viewBox="0 0 40 40" fill="none"><path d="M20,8 C14,14 10,20 10,26 a10,10 0 0,0 20,0 C30,20 26,14 20,8Z" stroke="#CA8A04" strokeWidth="1.2" fill="none"/><line x1="20" y1="30" x2="20" y2="34" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round"/></svg>,
     },
   ]
@@ -271,7 +262,7 @@ export default function Landing() {
             animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 20 : 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
-            ✦ Est. 2020 — Full Service Luxury Barbershop ✦
+            ✦ Est. 2020 — 6722 San Pedro Ave, San Antonio, TX ✦
           </motion.p>
           <motion.h1 className="hero-title"
             initial={{ opacity: 0, y: 30 }}
@@ -307,7 +298,7 @@ export default function Landing() {
             animate={{ opacity: showIntro ? 0 : 1 }}
             transition={{ duration: 0.7, delay: 0.9 }}
           >
-            {[['2,400+', 'Happy Clients'], ['Est.', '2020'], ['Luxury', 'Barbershop']].map(([num, label]) => (
+            {[['5.0 ★', 'Google Rating'], ['Est.', '2020'], ['San Antonio', 'Texas']].map(([num, label]) => (
               <div key={label} className="hero-stat">
                 <span className="stat-num">{num}</span>
                 <span className="stat-label">{label}</span>
@@ -335,10 +326,10 @@ export default function Landing() {
                 Precision is<br /><em>Our Religion.</em>
               </motion.h2>
               <motion.p className="exp-body" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }}>
-                Every client gets a tailored consultation. We study your face shape, hair texture, and lifestyle before a single blade touches your hair. This is barbering as an art form.
+                Chino, the owner and barber, brings attention to detail that sets Barberz Blvd apart. Known for recommending the best cut for your face and staying late to make sure you leave right.
               </motion.p>
               <motion.ul className="exp-features" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.5 }}>
-                {['Face-shape analysis before every cut','Master barbers with 5+ years experience','Japanese steel tools, sterilized between clients','Complimentary hot towel finish on all cuts'].map((item, i) => (
+                {['Personalized consultation on every visit','Attentive to detail — cuts tailored to your face shape','Knowledgeable, respectful, and professional','5.0 stars on Google — 5 reviews, zero complaints'].map((item, i) => (
                   <li key={i}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#CA8A04" strokeWidth="2.5"><path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     {item}
@@ -524,9 +515,9 @@ export default function Landing() {
           <h2>Straight from the <em>Chair</em></h2>
         </motion.div>
         <div className="testimonials-grid">
-          <Testimonial name="Aaron T." stars={5} text="Best cut I've ever had. He read my face perfectly — walked out looking like a new man. Won't go anywhere else." delay={0} />
-          <Testimonial name="James R." stars={5} text="The line-up and beard trim is unreal. Crisp, clean, exactly what I asked for. Barberz Blvd is the real deal." delay={0.1} />
-          <Testimonial name="Devon S." stars={5} text="My kid's haircut came out perfect and he actually sat still the whole time. Incredibly patient and talented." delay={0.2} />
+          <Testimonial name="Juan C." stars={5} text="Very nice cut, attentive to detail and even recommended ways for the haircut to look better. Even stayed open after hours to make sure I was done right. 10/10 will be going back next time." delay={0} />
+          <Testimonial name="Leo Contreras" stars={5} text="Gone here three times and have not been disappointed. The owner/barber is very knowledgeable. Looking forward to this clean, respectable barbershop in the neighborhood." delay={0.1} />
+          <Testimonial name="Emma Segovia" stars={5} text="Excellent service! My husband got a haircut from Chino — he's quick and very attentive. Highly recommended." delay={0.2} />
         </div>
       </section>
 
@@ -538,7 +529,7 @@ export default function Landing() {
         <div className="cta-glow" />
         <p className="section-eyebrow" style={{ color: '#CA8A04' }}>✦ Reserve Your Seat ✦</p>
         <h2>Your Best Cut is <em>One Click Away</em></h2>
-        <p>Appointments fill up fast. Secure your spot now.</p>
+        <p>Call or book online — <a href="tel:+12105486613" style={{ color: '#CA8A04' }}>+1 (210) 548-6613</a></p>
         <button className="btn-primary btn-large" onClick={() => navigate('/book')}>
           Book My Appointment
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -550,11 +541,13 @@ export default function Landing() {
       {/* Footer */}
       <footer className="footer">
         <div className="footer-logo-wrap"><BsbLogo size={52} /><span className="footer-logo">BARBERZ BLVD</span></div>
-        <p>Full service luxury barber shop.</p>
+        <p>Full Service Luxury Barbershop — San Antonio, TX</p>
         <div className="footer-links">
           <a href="#services">Services</a>
           <a href="#reviews">Reviews</a>
+          <a href="tel:+12105486613">+1 (210) 548-6613</a>
         </div>
+        <p style={{ fontSize: '12px', color: '#9A8A62', marginTop: '4px' }}>6722 San Pedro Ave, San Antonio, TX 78216</p>
         <p className="footer-copy">© 2020 Barberz Blvd — All Rights Reserved.</p>
         <button className="owner-login-btn" onClick={() => navigate('/owner')}>Owner Login</button>
       </footer>
