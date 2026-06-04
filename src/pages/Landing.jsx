@@ -1,7 +1,5 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import BarberIntro from '../components/ui/hero-barber'
 import RivrHero from '../components/ui/RivrHero'
 import './Landing.css'
 
@@ -79,7 +77,6 @@ function BarberPole() {
 
 /* ── Main ── */
 export default function Landing() {
-  const [showIntro, setShowIntro] = useState(true)
   const navigate = useNavigate()
 
   const services = [
@@ -117,22 +114,7 @@ export default function Landing() {
 
   return (
     <div className="landing">
-      <AnimatePresence>
-        {showIntro && (
-          <motion.div key="intro" exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
-            <BarberIntro onComplete={() => setShowIntro(false)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* RIVR-style glassmorphism hero */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showIntro ? 0 : 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        <RivrHero />
-      </motion.div>
+      <RivrHero />
 
       {/* 3D Experience Card */}
       <motion.section className="experience-section"

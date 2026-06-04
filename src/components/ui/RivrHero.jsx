@@ -122,22 +122,17 @@ export default function RivrHero() {
           </div>
         </div>
 
-        {/* Bottom-left glass card */}
-        <div id="tb-card" style={{ position: 'absolute', bottom: 48, left: 48, zIndex: 30, opacity: 0, transform: 'translateX(-40px)' }}>
-          <div style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 24, padding: 24, width: 280 }}>
-            {/* Avatar stack */}
-            <div style={{ display: 'flex', marginBottom: 16, marginLeft: 8 }}>
-              {[['JC','#4A7C59'],['LC','#2E5C8A'],['ES','#8A4A6E'],['+2','rgba(10,10,10,0.65)']].map(([i,bg],idx) => (
-                <div key={idx} style={{ width:40,height:40,borderRadius:'50%',background:bg,border:'2px solid rgba(255,255,255,0.5)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0,marginLeft:idx===0?0:-10,fontFamily:"'Jost',sans-serif" }}>{i}</div>
-              ))}
+        {/* Bottom-left compact badge — small, bottom corner, won't block content */}
+        <div id="tb-card" style={{ position: 'absolute', bottom: 24, left: 24, zIndex: 30, opacity: 0, transform: 'translateX(-40px)' }}>
+          <a href="tel:+12105486613" style={{ display:'flex',alignItems:'center',gap:10,background:'rgba(255,255,255,0.35)',backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.3)',borderRadius:999,padding:'10px 16px',textDecoration:'none',cursor:'pointer' }}>
+            <div style={{ background:'rgba(30,50,90,0.85)',borderRadius:'50%',width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1.72h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
-            <div style={{ color: '#041c44', fontWeight: 900, fontSize: 28, marginBottom: 4, fontFamily: "'Bodoni Moda',serif" }}>5.0 ★</div>
-            <div style={{ color: '#44474e', fontWeight: 500, fontSize: 14, marginBottom: 18, fontFamily: "'Jost',sans-serif" }}>Google Reviews</div>
-            <a href="tel:+12105486613" style={{ display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'rgba(30,50,90,0.85)',color:'#fff',borderRadius:12,padding:'11px 0',fontFamily:"'Jost',sans-serif",fontWeight:700,fontSize:14,textDecoration:'none' }}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1.72h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              +1 (210) 548-6613
-            </a>
-          </div>
+            <div>
+              <div style={{ color:'#CA8A04',fontWeight:700,fontSize:11,letterSpacing:'0.08em',fontFamily:"'Jost',sans-serif" }}>5.0 ★ GOOGLE</div>
+              <div style={{ color:'#1A1408',fontWeight:600,fontSize:13,fontFamily:"'Jost',sans-serif" }}>(210) 548-6613</div>
+            </div>
+          </a>
         </div>
 
         {/* Bottom-right SVG cutout — exact RIVR shape */}

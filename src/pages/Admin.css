@@ -1,9 +1,9 @@
 /* ── Shared ── */
 .admin-page, .pin-screen {
   min-height: 100vh;
-  background: linear-gradient(135deg, #080806 0%, #0f0e08 50%, #080806 100%);
+  background: #f8f6f0;
   font-family: 'Jost', sans-serif;
-  color: #F5F0E8;
+  color: #1A1408;
 }
 
 /* ══ PIN SCREEN ══ */
@@ -15,7 +15,7 @@
   font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 700;
   color: #CA8A04; letter-spacing: 0.35em; text-transform: uppercase;
 }
-.pin-screen h2 { font-family: 'Bodoni Moda', serif; font-size: 28px; color: #F5F0E8; font-weight: 500; }
+.pin-screen h2 { font-family: 'Bodoni Moda', serif; font-size: 28px; color: #1A1408; font-weight: 500; }
 .pin-screen > p { font-size: 13px; color: #6B5C3E; margin-top: -8px; }
 .pin-dots { display: flex; gap: 14px; margin: 8px 0; }
 .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(202,138,4,0.35); transition: all 0.2s; }
@@ -25,7 +25,7 @@
 .pin-pad { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; width: 240px; margin-top: 8px; }
 .pin-key {
   height: 64px; border-radius: 4px; border: 1px solid rgba(202,138,4,0.18);
-  background: rgba(255,255,255,0.04); color: #F5F0E8; font-size: 22px;
+  background: rgba(255,255,255,0.04); color: #1A1408; font-size: 22px;
   font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: 'Jost', sans-serif;
 }
 .pin-key:hover { background: rgba(202,138,4,0.15); border-color: rgba(202,138,4,0.4); }
@@ -60,7 +60,7 @@
   letter-spacing: 0.08em; cursor: pointer; border-radius: 2px 2px 0 0;
   transition: all 0.2s; border-bottom: 2px solid transparent; margin-bottom: -1px;
 }
-.admin-tab:hover { color: #F5F0E8; background: rgba(202,138,4,0.08); }
+.admin-tab:hover { color: #1A1408; background: rgba(202,138,4,0.08); }
 .admin-tab.active { color: #CA8A04; border-bottom-color: #CA8A04; background: rgba(202,138,4,0.06); }
 .admin-main { padding: 32px; max-width: 860px; margin: 0 auto; }
 .tab-content { display: flex; flex-direction: column; gap: 24px; }
@@ -82,7 +82,7 @@
   color: #4A3200; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
 }
-.filter-tab:hover { color: #F5F0E8; border-color: rgba(202,138,4,0.4); }
+.filter-tab:hover { color: #1A1408; border-color: rgba(202,138,4,0.4); }
 .filter-tab.active { background: rgba(202,138,4,0.15); border-color: #CA8A04; color: #CA8A04; }
 
 /* ── Booking rows ── */
@@ -98,12 +98,12 @@
   width: 38px; height: 38px; border-radius: 2px;
   background: linear-gradient(135deg, #CA8A04, #6A4200);
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Bodoni Moda', serif; font-weight: 700; font-size: 16px; color: #F5F0E8; flex-shrink: 0;
+  font-family: 'Bodoni Moda', serif; font-weight: 700; font-size: 16px; color: #1A1408; flex-shrink: 0;
 }
-.booking-name { font-family: 'Bodoni Moda', serif; font-size: 15px; font-weight: 500; color: #F5F0E8; }
+.booking-name { font-family: 'Bodoni Moda', serif; font-size: 15px; font-weight: 500; color: #1A1408; }
 .booking-meta { font-size: 12px; color: #4A3200; margin-top: 2px; font-family: 'Jost', sans-serif; }
 .booking-row-right { display: flex; align-items: center; gap: 12px; }
-.booking-date { font-size: 13px; color: #9A8A6A; font-weight: 600; font-family: 'Jost', sans-serif; }
+.booking-date { font-size: 13px; color: #8A6030; font-weight: 600; font-family: 'Jost', sans-serif; }
 .btn-cancel {
   display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 2px;
   background: rgba(180,83,9,0.1); border: 1px solid rgba(180,83,9,0.25);
@@ -133,7 +133,7 @@
 .field-group-inline label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4A3200; }
 .hours-sep { font-size: 18px; color: #CA8A04; padding-bottom: 10px; }
 .hours-summary {
-  font-size: 13px; color: #9A8A6A; padding: 8px 12px;
+  font-size: 13px; color: #8A6030; padding: 8px 12px;
   background: rgba(202,138,4,0.06); border: 1px solid rgba(202,138,4,0.18);
   border-radius: 2px;
 }
@@ -153,7 +153,7 @@
 .btn-save {
   display: inline-flex; align-items: center;
   background: linear-gradient(135deg, #CA8A04, #6A4200);
-  color: #F5F0E8; border: none; border-radius: 2px;
+  color: #1A1408; border: none; border-radius: 2px;
   padding: 12px 28px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 700;
   letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
 }
@@ -170,7 +170,7 @@
 .weekday-btn.off { border-color: rgba(180,83,9,0.4);    background: rgba(180,83,9,0.10);  }
 .weekday-btn.on:hover  { border-color: rgba(16,185,129,0.6); }
 .weekday-btn.off:hover { border-color: rgba(180,83,9,0.65); }
-.weekday-name { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; color: #F5F0E8; font-family: 'Jost', sans-serif; }
+.weekday-name { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; color: #1A1408; font-family: 'Jost', sans-serif; }
 .weekday-status { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
 .weekday-btn.on  .weekday-status { color: #6ee7b7; }
 .weekday-btn.off .weekday-status { color: #fca5a5; }
@@ -180,7 +180,7 @@
 .block-day-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
 .admin-select, .admin-input-sm {
   background: rgba(255,255,255,0.05); border: 1px solid rgba(202,138,4,0.2);
-  border-radius: 2px; color: #F5F0E8; padding: 10px 12px;
+  border-radius: 2px; color: #1A1408; padding: 10px 12px;
   font-size: 13px; font-family: 'Jost', sans-serif; outline: none;
 }
 .admin-input-sm { width: 80px; }
@@ -213,7 +213,7 @@
 .field-group label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4A3200; }
 .admin-input {
   background: rgba(255,255,255,0.05); border: 1.5px solid rgba(202,138,4,0.2);
-  border-radius: 2px; color: #F5F0E8; padding: 12px 14px;
+  border-radius: 2px; color: #1A1408; padding: 12px 14px;
   font-size: 14px; font-family: 'Jost', sans-serif; outline: none; width: 100%;
 }
 .admin-input:focus { border-color: #CA8A04; box-shadow: 0 0 0 3px rgba(202,138,4,0.1); }
@@ -225,7 +225,7 @@
 .review-row-admin { flex-direction: column; align-items: flex-start; }
 .review-score { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-left: auto; flex-shrink: 0; }
 .review-emoji-big { font-size: 28px; line-height: 1; }
-.review-label-tag { font-size: 10px; font-weight: 700; color: #9A8A6A; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Jost', sans-serif; }
+.review-label-tag { font-size: 10px; font-weight: 700; color: #8A6030; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Jost', sans-serif; }
 .review-comment-admin {
   font-size: 13px; color: #6B5C3E; font-style: italic;
   padding: 8px 12px; background: rgba(202,138,4,0.05);
@@ -235,7 +235,7 @@
 
 /* ── Per-day custom schedule ── */
 .day-loaded-label {
-  font-size: 13px; color: #9A8A6A; margin-bottom: 14px;
+  font-size: 13px; color: #8A6030; margin-bottom: 14px;
   padding: 8px 12px; background: rgba(202,138,4,0.05);
   border: 1px solid rgba(202,138,4,0.18); border-radius: 2px;
 }
@@ -269,7 +269,7 @@
   display: flex; align-items: center; gap: 10px; padding: 10px 14px;
   background: rgba(202,138,4,0.03); border: 1px solid rgba(202,138,4,0.12); border-radius: 2px;
 }
-.override-date  { font-size: 13px; font-weight: 600; color: #F5F0E8; flex: 1; font-family: 'Jost', sans-serif; }
+.override-date  { font-size: 13px; font-weight: 600; color: #1A1408; flex: 1; font-family: 'Jost', sans-serif; }
 .override-slots { font-size: 12px; color: #6B5C3E; min-width: 60px; }
 .override-edit  {
   padding: 5px 12px; border-radius: 2px; border: 1px solid rgba(202,138,4,0.3);
