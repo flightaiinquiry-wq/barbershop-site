@@ -31,7 +31,7 @@
 .nav-cta:hover { background: #CA8A04; color: #080806; }
 
 /* ── Hero ── */
-.landing { overflow-x: hidden; }
+.landing { overflow-x: hidden; background: #f8f6f0; }
 
 .hero {
   min-height: 100vh;
@@ -154,7 +154,7 @@
 
 .exp-bottom-fade {
   position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
-  background: linear-gradient(to top, #0d0c08, transparent);
+  background: linear-gradient(to top, #f8f6f0, transparent);
   pointer-events: none; z-index: 3;
 }
 

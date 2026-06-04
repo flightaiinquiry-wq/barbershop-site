@@ -45,7 +45,7 @@ function PinScreen({ onSuccess }) {
 
   return (
     <div className="pin-screen">
-      <div className="pin-brand">✦ BARBERZ BLVD</div>
+      <div className="pin-brand">✦ TOP BARBERSHOP</div>
       <h2>Owner Access</h2>
       <p>Enter your 4-digit code</p>
       <motion.div className={`pin-dots ${error ? 'pin-error' : ''}`}
@@ -457,7 +457,7 @@ export default function Admin() {
   return (
     <div className="admin-page">
       <header className="admin-header">
-        <div className="admin-logo">✦ BARBERZ BLVD <span>Owner Dashboard</span></div>
+        <div className="admin-logo">✦ TOP BARBERSHOP <span>Owner Dashboard</span></div>
         <button className="btn-logout" onClick={() => setAuthed(false)}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Lock

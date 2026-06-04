@@ -4,19 +4,20 @@ import { ArrowUpRight, ChevronRight, Scissors } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 function BsbLogo({ size = 38 }) {
-  const c = '#CA8A04'
+  const g = '#CA8A04'
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="47" stroke={c} strokeWidth="2.5"/>
-      <circle cx="50" cy="50" r="38" stroke={c} strokeWidth="1" strokeOpacity="0.45"/>
-      <defs><path id="bsb-arc2" d="M 14,50 A 36,36 0 1,1 86,50"/></defs>
-      <text fill={c} fontSize="7.2" fontWeight="700" letterSpacing="1.8" fontFamily="Jost,sans-serif">
-        <textPath href="#bsb-arc2" startOffset="4%">BARBERZ BOULEVARD BARBERSHOP</textPath>
-      </text>
-      <text x="50" y="56" textAnchor="middle" fill={c} fontSize="21" fontWeight="800"
-        fontFamily="'Bodoni Moda',serif" letterSpacing="1">BSB</text>
-      <text x="50" y="68" textAnchor="middle" fill={c} fontSize="6" fontWeight="600"
-        letterSpacing="2.5" fontFamily="Jost,sans-serif">— EST. 2020 —</text>
+      <circle cx="50" cy="50" r="47" stroke={g} strokeWidth="2"/>
+      <circle cx="50" cy="50" r="40" stroke={g} strokeWidth="0.8" strokeOpacity="0.4"/>
+      <g transform="translate(50,50)">
+        <line x1="-2" y1="-18" x2="-14" y2="12" stroke={g} strokeWidth="3" strokeLinecap="round"/>
+        <line x1="2" y1="-18" x2="14" y2="12" stroke={g} strokeWidth="3" strokeLinecap="round"/>
+        <circle cx="0" cy="-3" r="3.5" fill={g}/>
+        <circle cx="-16" cy="15" r="6" stroke={g} strokeWidth="2" fill="none"/>
+        <circle cx="16" cy="15" r="6" stroke={g} strokeWidth="2" fill="none"/>
+      </g>
+      <text x="50" y="78" textAnchor="middle" fill={g} fontSize="8" fontWeight="700"
+        letterSpacing="3" fontFamily="Jost,sans-serif">TOP</text>
     </svg>
   )
 }
@@ -29,7 +30,7 @@ function HeroNav({ navigate }) {
       <div className="flex items-center gap-3">
         <BsbLogo size={38} />
         <span style={{ fontFamily: "'Jost', sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: '0.22em', color: '#CA8A04', textTransform: 'uppercase' }}>
-          BARBERZ BLVD
+          TOP BARBERSHOP
         </span>
       </div>
 

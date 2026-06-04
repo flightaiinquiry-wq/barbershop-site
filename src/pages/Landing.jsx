@@ -1,104 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import BarberIntro from '../components/ui/hero-barber'
 import RivrHero from '../components/ui/RivrHero'
 import './Landing.css'
-
-/* ── Straight razor + geometric rings hero deco ── */
-function RazorDeco({ animate }) {
-  return (
-    <motion.div
-      className="razor-deco"
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={{ opacity: animate ? 1 : 0, scale: animate ? 1 : 0.85 }}
-      transition={{ duration: 1.1, delay: 0.5 }}
-    >
-      <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="rzGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="bladeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stopColor="#CA8A04" />
-            <stop offset="55%"  stopColor="#D4AF37" />
-            <stop offset="100%" stopColor="#F5C842" />
-          </linearGradient>
-          <filter id="rzBlur"><feGaussianBlur stdDeviation="12" /></filter>
-        </defs>
-
-        {/* Background glow */}
-        <ellipse cx="160" cy="160" rx="140" ry="140" fill="url(#rzGlow)" filter="url(#rzBlur)" />
-
-        {/* Outer rotating diamond rings */}
-        <motion.path d="M160,28 L292,160 L160,292 L28,160 Z"
-          stroke="#CA8A04" strokeWidth="0.9" fill="none" strokeOpacity="0.35"
-          animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-          style={{ transformOrigin: '160px 160px' }}
-        />
-        <motion.path d="M160,56 L264,160 L160,264 L56,160 Z"
-          stroke="#D4AF37" strokeWidth="0.5" fill="none" strokeOpacity="0.2"
-          animate={{ rotate: -360 }} transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-          style={{ transformOrigin: '160px 160px' }}
-        />
-
-        {/* ── STRAIGHT RAZOR (tilted 38°, centered at 160,160) ── */}
-        <g transform="rotate(38, 160, 160)">
-          {/* Handle — dark pill with gold border */}
-          <rect x="58" y="150" width="108" height="26" rx="13"
-            fill="#0D0C08" stroke="#CA8A04" strokeWidth="1.5" />
-          {/* Handle rivets */}
-          <circle cx="80"  cy="163" r="5.5" fill="#CA8A04" />
-          <circle cx="103" cy="163" r="5.5" fill="#CA8A04" />
-          <circle cx="126" cy="163" r="5.5" fill="#CA8A04" />
-          {/* End cap */}
-          <circle cx="64"  cy="163" r="9"   fill="#CA8A04" fillOpacity="0.35" />
-          {/* Pivot pin */}
-          <circle cx="166" cy="163" r="10"  fill="#D4AF37" />
-          <circle cx="166" cy="163" r="5"   fill="#6A4800" />
-
-          {/* Blade body */}
-          <path d="M166,151 L258,155 L263,163 L258,171 L166,175 Z" fill="url(#bladeGrad)" />
-          {/* Blade spine */}
-          <line x1="166" y1="151" x2="258" y2="155" stroke="#8B6000" strokeWidth="1.2" />
-          {/* Cutting edge — bright highlight */}
-          <line x1="166" y1="175" x2="263" y2="163" stroke="#F5C842" strokeWidth="2.5" />
-          <line x1="166" y1="175" x2="263" y2="163" stroke="#FFE580" strokeWidth="1"
-            strokeOpacity="0.6" />
-        </g>
-
-        {/* Tick marks */}
-        {[...Array(16)].map((_, i) => {
-          const a = (i / 16) * Math.PI * 2
-          const r1 = 138, r2 = i % 4 === 0 ? 116 : 128
-          return (
-            <line key={i}
-              x1={160 + Math.cos(a) * r1} y1={160 + Math.sin(a) * r1}
-              x2={160 + Math.cos(a) * r2} y2={160 + Math.sin(a) * r2}
-              stroke="#CA8A04" strokeWidth={i % 4 === 0 ? 1.6 : 0.8} strokeOpacity="0.5"
-            />
-          )
-        })}
-
-        {/* Corner sparkles */}
-        {[45, 135, 225, 315].map((angle, i) => {
-          const rad = (angle * Math.PI) / 180
-          return (
-            <motion.circle key={i}
-              cx={160 + Math.cos(rad) * 102}
-              cy={160 + Math.sin(rad) * 102}
-              r="3" fill="#D4AF37"
-              animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.7, 1] }}
-              transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.6, ease: 'easeInOut' }}
-              style={{ transformOrigin: `${160 + Math.cos(rad) * 102}px ${160 + Math.sin(rad) * 102}px` }}
-            />
-          )
-        })}
-      </svg>
-    </motion.div>
-  )
-}
 
 /* ── Service card ── */
 function ServiceCard({ title, desc, tag, delay, icon }) {
@@ -119,49 +24,31 @@ function ServiceCard({ title, desc, tag, delay, icon }) {
   )
 }
 
-/* ── BSB circular badge logo ── */
+/* ── Top Barbershop minimal logo ── */
 function BsbLogo({ size = 44 }) {
-  const c = '#CA8A04'
+  const g = '#CA8A04'
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="47" stroke={c} strokeWidth="2.5"/>
-      <circle cx="50" cy="50" r="38" stroke={c} strokeWidth="1" strokeOpacity="0.45"/>
-      <defs>
-        <path id="bsb-arc" d="M 14,50 A 36,36 0 1,1 86,50"/>
-      </defs>
-      <text fill={c} fontSize="7.2" fontWeight="700" letterSpacing="1.8" fontFamily="Jost,sans-serif">
-        <textPath href="#bsb-arc" startOffset="4%">BARBERZ BOULEVARD BARBERSHOP</textPath>
-      </text>
-      <text x="50" y="56" textAnchor="middle" fill={c} fontSize="21" fontWeight="800"
-        fontFamily="'Bodoni Moda',serif" letterSpacing="1">BSB</text>
-      <text x="50" y="68" textAnchor="middle" fill={c} fontSize="6" fontWeight="600"
-        letterSpacing="2.5" fontFamily="Jost,sans-serif">— EST. 2020 —</text>
+      {/* Outer ring */}
+      <circle cx="50" cy="50" r="47" stroke={g} strokeWidth="2"/>
+      {/* Inner thin ring */}
+      <circle cx="50" cy="50" r="40" stroke={g} strokeWidth="0.8" strokeOpacity="0.4"/>
+      {/* Scissors icon — minimal */}
+      <g transform="translate(50,50)">
+        {/* Left blade */}
+        <line x1="-2" y1="-18" x2="-14" y2="12" stroke={g} strokeWidth="3" strokeLinecap="round"/>
+        {/* Right blade */}
+        <line x1="2" y1="-18" x2="14" y2="12" stroke={g} strokeWidth="3" strokeLinecap="round"/>
+        {/* Pivot */}
+        <circle cx="0" cy="-3" r="3.5" fill={g}/>
+        {/* Handle rings */}
+        <circle cx="-16" cy="15" r="6" stroke={g} strokeWidth="2" fill="none"/>
+        <circle cx="16" cy="15" r="6" stroke={g} strokeWidth="2" fill="none"/>
+      </g>
+      {/* "TB" monogram below scissors */}
+      <text x="50" y="78" textAnchor="middle" fill={g} fontSize="8" fontWeight="700"
+        letterSpacing="3" fontFamily="Jost,sans-serif">TOP</text>
     </svg>
-  )
-}
-
-/* ── Barber card ── */
-function BarberCard({ name, role, specialty, delay }) {
-  return (
-    <motion.div className="barber-card"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.55, delay }}
-    >
-      <div className="barber-avatar">
-        <svg viewBox="0 0 80 80" fill="none">
-          <circle cx="40" cy="40" r="38" stroke="#CA8A04" strokeWidth="1" strokeOpacity="0.4" />
-          <circle cx="40" cy="30" r="14" fill="#1C1B14" stroke="#CA8A04" strokeWidth="0.8" strokeOpacity="0.6" />
-          <path d="M12,70 Q40,48 68,70" fill="#1C1B14" stroke="#CA8A04" strokeWidth="0.8" strokeOpacity="0.6" />
-        </svg>
-      </div>
-      <div className="barber-info">
-        <h3>{name}</h3>
-        <p className="barber-role">{role}</p>
-        <p className="barber-specialty">Specialty: {specialty}</p>
-      </div>
-    </motion.div>
   )
 }
 
@@ -194,9 +81,6 @@ function BarberPole() {
 export default function Landing() {
   const [showIntro, setShowIntro] = useState(true)
   const navigate = useNavigate()
-  const heroRef = useRef(null)
-  const { scrollY } = useScroll()
-  const heroParallax = useTransform(scrollY, [0, 500], [0, -60])
 
   const services = [
     {
@@ -266,7 +150,7 @@ export default function Landing() {
                 Precision is<br /><em>Our Religion.</em>
               </motion.h2>
               <motion.p className="exp-body" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }}>
-                Chino, the owner and barber, brings attention to detail that sets Barberz Blvd apart. Known for recommending the best cut for your face and staying late to make sure you leave right.
+                Chino, the owner and barber, brings attention to detail that sets Top Barbershop apart. Known for recommending the best cut for your face and staying late to make sure you leave right.
               </motion.p>
               <motion.ul className="exp-features" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.5 }}>
                 {['Personalized consultation on every visit','Attentive to detail — cuts tailored to your face shape','Knowledgeable, respectful, and professional','5.0 stars on Google — 5 reviews, zero complaints'].map((item, i) => (
@@ -480,7 +364,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-logo-wrap"><BsbLogo size={52} /><span className="footer-logo">BARBERZ BLVD</span></div>
+        <div className="footer-logo-wrap"><BsbLogo size={52} /><span className="footer-logo">TOP BARBERSHOP</span></div>
         <p>Full Service Luxury Barbershop — San Antonio, TX</p>
         <div className="footer-links">
           <a href="#services">Services</a>
@@ -488,7 +372,7 @@ export default function Landing() {
           <a href="tel:+12105486613">+1 (210) 548-6613</a>
         </div>
         <p style={{ fontSize: '12px', color: '#9A8A62', marginTop: '4px' }}>6722 San Pedro Ave, San Antonio, TX 78216</p>
-        <p className="footer-copy">© 2020 Barberz Blvd — All Rights Reserved.</p>
+        <p className="footer-copy">© 2020 Top Barbershop — All Rights Reserved.</p>
         <button className="owner-login-btn" onClick={() => navigate('/owner')}>Owner Login</button>
       </footer>
     </div>
