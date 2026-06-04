@@ -1,14 +1,12 @@
-import { useRef } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowUpRight, ChevronRight, Scissors } from 'lucide-react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function BsbLogo({ size = 38 }) {
+function TopLogo({ size = 34 }) {
   const g = '#CA8A04'
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
       <circle cx="50" cy="50" r="47" stroke={g} strokeWidth="2"/>
-      <circle cx="50" cy="50" r="40" stroke={g} strokeWidth="0.8" strokeOpacity="0.4"/>
+      <circle cx="50" cy="50" r="40" stroke={g} strokeWidth="0.8" strokeOpacity="0.45"/>
       <g transform="translate(50,50)">
         <line x1="-2" y1="-18" x2="-14" y2="12" stroke={g} strokeWidth="3" strokeLinecap="round"/>
         <line x1="2" y1="-18" x2="14" y2="12" stroke={g} strokeWidth="3" strokeLinecap="round"/>
@@ -22,205 +20,153 @@ function BsbLogo({ size = 38 }) {
   )
 }
 
-/* ── Navbar ── */
-function HeroNav({ navigate }) {
-  return (
-    <nav className="flex items-center justify-between py-5 px-6 md:px-10 w-full relative z-10">
-      {/* Logo */}
-      <div className="flex items-center gap-3">
-        <BsbLogo size={38} />
-        <span style={{ fontFamily: "'Jost', sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: '0.22em', color: '#CA8A04', textTransform: 'uppercase' }}>
-          TOP BARBERSHOP
-        </span>
-      </div>
-
-      {/* Center links — desktop */}
-      <ul className="hidden md:flex items-center gap-8" style={{ color: 'rgba(30,20,5,0.75)', fontSize: 14, fontFamily: "'Jost', sans-serif", fontWeight: 500 }}>
-        {['Services', 'Reviews', 'Location'].map(item => (
-          <li key={item} className="cursor-pointer hover:opacity-60 transition-opacity">
-            <a href={`#${item.toLowerCase()}`}>{item}</a>
-          </li>
-        ))}
-      </ul>
-
-      {/* Book Now CTA */}
-      <motion.button
-        whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-        onClick={() => navigate('/book')}
-        className="flex items-center rounded-full gap-2 cursor-pointer transition-colors"
-        style={{ background: 'rgba(12,10,2,0.85)', color: 'white', paddingLeft: 8, paddingRight: 20, paddingTop: 8, paddingBottom: 8, fontFamily: "'Jost', sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}
-      >
-        <div style={{ background: 'rgba(202,138,4,0.25)', borderRadius: '50%', padding: 6, display: 'flex' }}>
-          <ArrowUpRight size={16} color="#CA8A04" />
-        </div>
-        Book Now
-      </motion.button>
-    </nav>
-  )
-}
-
-/* ── Badge ── */
-function HeroBadge() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="flex items-center gap-2 px-4 py-2 rounded-full mx-auto mb-4 w-fit"
-      style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(202,138,4,0.25)' }}
-    >
-      <Scissors size={14} color="#CA8A04" />
-      <span style={{ fontSize: 13, fontFamily: "'Jost', sans-serif", fontWeight: 600, letterSpacing: '0.15em', color: '#6B4A00', textTransform: 'uppercase' }}>
-        Luxury Barbershop · San Antonio, TX
-      </span>
-    </motion.div>
-  )
-}
-
-/* ── Bottom-left stats card ── */
-function StatsCard({ navigate }) {
-  return (
-    <motion.div
-      initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="absolute"
-      style={{
-        bottom: 24, left: 24,
-        padding: '18px 20px', borderRadius: 28,
-        background: 'rgba(255,255,255,0.35)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.5)',
-        display: 'flex', flexDirection: 'column', gap: 10, minWidth: 160
-      }}
-    >
-      <div>
-        <p style={{ fontSize: 30, fontWeight: 700, color: 'rgba(30,20,5,0.9)', lineHeight: 1.1, fontFamily: "'Bodoni Moda', serif" }}>5.0 ★</p>
-        <p style={{ fontSize: 10, color: 'rgba(30,20,5,0.55)', textTransform: 'uppercase', letterSpacing: '0.14em', fontFamily: "'Jost', sans-serif", fontWeight: 600, marginTop: 2 }}>Google Rating</p>
-      </div>
-      <motion.button
-        whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-        onClick={() => navigate('/book')}
-        className="flex items-center gap-2 rounded-full cursor-pointer transition-colors"
-        style={{ background: 'white', paddingLeft: 8, paddingRight: 16, paddingTop: 7, paddingBottom: 7, alignSelf: 'flex-start', border: 'none', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
-      >
-        <div style={{ background: 'rgba(202,138,4,0.12)', borderRadius: '50%', padding: 5, display: 'flex' }}>
-          <ArrowUpRight size={13} color="#CA8A04" />
-        </div>
-        <span style={{ fontSize: 13, fontFamily: "'Jost', sans-serif", fontWeight: 600, color: 'rgba(30,20,5,0.85)', letterSpacing: '0.06em' }}>Book Appointment</span>
-      </motion.button>
-    </motion.div>
-  )
-}
-
-/* ── Bottom-right cutout corner ── */
-function BottomRightCorner() {
-  return (
-    <motion.div
-      initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
-      className="absolute bottom-0 right-0"
-      style={{
-        padding: '22px 20px 20px 48px',
-        background: '#f8f6f0',
-        borderTopLeftRadius: 48,
-        display: 'flex', alignItems: 'center', gap: 18
-      }}
-    >
-      {/* Top mask */}
-      <div style={{ position: 'absolute', top: -48, right: 0, width: 48, height: 48, pointerEvents: 'none' }}>
-        <svg width="100%" height="100%" viewBox="0 0 56 56" fill="none">
-          <path d="M56 56V0C56 30.9279 30.9279 56 0 56H56Z" fill="#f8f6f0"/>
-        </svg>
-      </div>
-      {/* Left mask */}
-      <div style={{ position: 'absolute', bottom: 0, left: -48, width: 48, height: 48, pointerEvents: 'none' }}>
-        <svg width="100%" height="100%" viewBox="0 0 56 56" fill="none">
-          <path d="M56 56H0C30.9279 56 56 30.9279 56 0V56Z" fill="#f8f6f0"/>
-        </svg>
-      </div>
-
-      <div style={{ background: 'rgba(202,138,4,0.08)', width: 48, height: 48, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(202,138,4,0.2)' }}>
-        <Scissors size={20} color="#CA8A04" />
-      </div>
-      <div>
-        <p style={{ fontSize: 17, fontFamily: "'Bodoni Moda', serif", fontWeight: 600, color: 'rgba(30,20,5,0.9)', marginBottom: 2 }}>Our Services</p>
-        <div className="flex items-center gap-1" style={{ cursor: 'pointer' }}>
-          <a href="#services" style={{ fontSize: 12, fontFamily: "'Jost', sans-serif", color: 'rgba(30,20,5,0.5)', letterSpacing: '0.1em', textDecoration: 'none' }}>View menu</a>
-          <ChevronRight size={12} color="rgba(30,20,5,0.4)" />
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-/* ── Main hero ── */
 export default function RivrHero() {
   const navigate = useNavigate()
-  const videoRef = useRef(null)
+
+  // Staggered entrance animations — exact RIVR pattern
+  useEffect(() => {
+    const els = {
+      title:   document.getElementById('tb-title'),
+      desc:    document.getElementById('tb-desc'),
+      actions: document.getElementById('tb-actions'),
+      card:    document.getElementById('tb-card'),
+      corner:  document.getElementById('tb-corner'),
+    }
+    if (!els.title) return
+    setTimeout(() => { els.title.style.transition = 'all 1s cubic-bezier(0.16,1,0.3,1)'; els.title.style.opacity = '1'; els.title.style.transform = 'translateY(0) scale(1)' }, 300)
+    setTimeout(() => { els.desc.style.transition = 'all 0.8s ease-out'; els.desc.style.opacity = '1'; els.desc.style.transform = 'translateY(0)' }, 600)
+    setTimeout(() => { els.actions.style.transition = 'all 0.8s ease-out'; els.actions.style.opacity = '1'; els.actions.style.transform = 'translateY(0)' }, 900)
+    setTimeout(() => { els.card.style.transition = 'all 0.8s cubic-bezier(0.34,1.56,0.64,1)'; els.card.style.opacity = '1'; els.card.style.transform = 'translateX(0)' }, 1200)
+    setTimeout(() => { els.corner.style.transition = 'all 0.8s ease-out'; els.corner.style.opacity = '1' }, 1500)
+  }, [])
+
+  // Badge mouse parallax
+  useEffect(() => {
+    const fn = (e) => {
+      const b = document.getElementById('tb-badge')
+      if (!b) return
+      b.style.transform = `translate(${(e.clientX/window.innerWidth-.5)*20}px,${(e.clientY/window.innerHeight-.5)*20}px)`
+    }
+    window.addEventListener('mousemove', fn)
+    return () => window.removeEventListener('mousemove', fn)
+  }, [])
 
   return (
-    <div className="w-full h-screen flex items-center justify-center p-3 md:p-5"
-      style={{ background: '#f8f6f0' }}>
-      <section
-        className="relative w-full h-full overflow-hidden flex flex-col items-center"
-        style={{ borderRadius: 40, maxWidth: 1536, background: 'rgba(255,255,255,0.08)' }}
-      >
-        {/* Video background */}
-        <video
-          ref={videoRef}
-          autoPlay muted loop playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: 0, objectPosition: '65% center' }}
+    <>
+      {/* Fixed header with mix-blend-difference — text inverts against bg */}
+      <header style={{
+        position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 50,
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        padding: '24px 48px', mixBlendMode: 'difference',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <TopLogo size={34} />
+          <span style={{ color: '#fff', fontFamily: "'Jost',sans-serif", fontWeight: 800, fontSize: 14, letterSpacing: '0.22em', textTransform: 'uppercase' }}>Top Barbershop</span>
+        </div>
+        <nav style={{ display: 'flex', gap: 40 }}>
+          {['Services', 'Reviews', 'Location'].map(l => (
+            <a key={l} href={`#${l.toLowerCase()}`}
+              style={{ color: 'rgba(255,255,255,0.8)', fontFamily: "'Jost',sans-serif", fontWeight: 500, fontSize: 15, textDecoration: 'none', transition: 'opacity 0.2s' }}>
+              {l}
+            </a>
+          ))}
+        </nav>
+        <button onClick={() => navigate('/book')}
+          style={{ background: '#fff', color: '#0D0C08', border: 'none', borderRadius: 999, padding: '10px 24px', fontFamily: "'Jost',sans-serif", fontWeight: 700, fontSize: 14, letterSpacing: '0.06em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
+          Book Now
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
+      </header>
+
+      {/* Hero floating card — RIVR exact sizing */}
+      <section style={{ height: 'calc(100vh - 32px)', margin: 16, borderRadius: '3rem', overflow: 'hidden', position: 'relative', boxShadow: '0 25px 80px rgba(0,0,0,0.35)' }}>
+
+        {/* Video */}
+        <video autoPlay muted loop playsInline
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4"
         />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.12)', zIndex: 1 }}/>
 
-        {/* Subtle overlay for text readability */}
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'linear-gradient(135deg, rgba(248,246,240,0.45) 0%, rgba(248,246,240,0.1) 60%, transparent 100%)' }} />
+        {/* Center content */}
+        <div style={{ position: 'relative', zIndex: 20, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 24px', textAlign: 'center' }}>
 
-        {/* Content layer */}
-        <div className="relative w-full h-full flex flex-col items-center" style={{ zIndex: 10 }}>
-          <HeroNav navigate={navigate} />
-
-          {/* Center text */}
-          <div className="w-full flex flex-col items-center px-6 text-center" style={{ maxWidth: 760, paddingTop: 24 }}>
-            <HeroBadge />
-            <motion.h1
-              initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              style={{
-                fontSize: 'clamp(2.6rem, 7vw, 80px)',
-                fontFamily: "'Bodoni Moda', serif",
-                fontWeight: 500,
-                color: '#1A1408',
-                marginBottom: 14,
-                lineHeight: 1.05,
-                letterSpacing: '-0.01em'
-              }}
-            >
-              The Art of<br /><em>the Perfect Cut.</em>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              style={{
-                fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
-                color: 'rgba(30,20,5,0.65)',
-                lineHeight: 1.7,
-                maxWidth: 480,
-                fontFamily: "'Jost', sans-serif",
-                fontWeight: 300
-              }}
-            >
-              Walk in. Transform. Walk out legendary.<br />
-              6722 San Pedro Ave · San Antonio, TX · <a href="tel:+12105486613" style={{ color: '#CA8A04', textDecoration: 'none' }}>+1 (210) 548-6613</a>
-            </motion.p>
+          {/* Floating badge */}
+          <div id="tb-badge" style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 999, padding: '7px 18px', marginBottom: 32, display: 'inline-flex', alignItems: 'center', gap: 8, animation: 'tb-float 6s ease-in-out infinite', transition: 'transform 0.1s ease-out' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#CA8A04"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+            <span style={{ color: '#6B4A00', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif" }}>5.0 Google Rating · Est. 2020</span>
           </div>
 
-          {/* Bottom cards */}
-          <StatsCard navigate={navigate} />
-          <BottomRightCorner />
+          {/* H1 */}
+          <h1 id="tb-title" style={{ fontFamily: "'Bodoni Moda',serif", fontSize: 'clamp(52px,8.5vw,110px)', fontWeight: 900, lineHeight: 0.92, letterSpacing: '-0.02em', color: '#5E6470', marginBottom: 24, maxWidth: 900, opacity: 0, transform: 'translateY(40px) scale(0.98)' }}>
+            The Art of<br /><em style={{ color: '#1A1408', fontStyle: 'italic' }}>the Perfect Cut.</em>
+          </h1>
+
+          {/* Desc */}
+          <p id="tb-desc" style={{ color: '#fff', fontSize: 'clamp(16px,1.8vw,20px)', maxWidth: 480, lineHeight: 1.65, fontWeight: 500, marginBottom: 40, opacity: 0, transform: 'translateY(20px)', fontFamily: "'Jost',sans-serif" }}>
+            Walk in. Transform. Walk out legendary.<br />6722 San Pedro Ave · San Antonio, TX
+          </p>
+
+          {/* Buttons */}
+          <div id="tb-actions" style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center', opacity: 0, transform: 'translateY(20px)' }}>
+            <button onClick={() => navigate('/book')}
+              style={{ background: '#0D0C08', color: '#fff', border: 'none', borderRadius: 16, padding: '16px 32px', fontFamily: "'Jost',sans-serif", fontWeight: 700, fontSize: 17, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10 }}>
+              Book Appointment
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', borderRadius: 16, padding: '16px 32px', fontFamily: "'Jost',sans-serif", fontWeight: 700, fontSize: 17, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10 }}>
+              View Services
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom-left glass card */}
+        <div id="tb-card" style={{ position: 'absolute', bottom: 48, left: 48, zIndex: 30, opacity: 0, transform: 'translateX(-40px)' }}>
+          <div style={{ background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 24, padding: 24, width: 280 }}>
+            {/* Avatar stack */}
+            <div style={{ display: 'flex', marginBottom: 16, marginLeft: 8 }}>
+              {[['JC','#4A7C59'],['LC','#2E5C8A'],['ES','#8A4A6E'],['+2','rgba(10,10,10,0.65)']].map(([i,bg],idx) => (
+                <div key={idx} style={{ width:40,height:40,borderRadius:'50%',background:bg,border:'2px solid rgba(255,255,255,0.5)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',flexShrink:0,marginLeft:idx===0?0:-10,fontFamily:"'Jost',sans-serif" }}>{i}</div>
+              ))}
+            </div>
+            <div style={{ color: '#041c44', fontWeight: 900, fontSize: 28, marginBottom: 4, fontFamily: "'Bodoni Moda',serif" }}>5.0 ★</div>
+            <div style={{ color: '#44474e', fontWeight: 500, fontSize: 14, marginBottom: 18, fontFamily: "'Jost',sans-serif" }}>Google Reviews</div>
+            <a href="tel:+12105486613" style={{ display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'rgba(30,50,90,0.85)',color:'#fff',borderRadius:12,padding:'11px 0',fontFamily:"'Jost',sans-serif",fontWeight:700,fontSize:14,textDecoration:'none' }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1.72h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              +1 (210) 548-6613
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom-right SVG cutout — exact RIVR shape */}
+        <div id="tb-corner" style={{ position: 'absolute', bottom: 0, right: 0, zIndex: 40, width: 300, height: 160, opacity: 0 }}>
+          <svg style={{ position:'absolute',bottom:0,right:0 }} width="300" height="160" viewBox="0 0 300 160" fill="none">
+            <path d="M0 160H300V0C300 33.1371 273.137 60 240 60H60C26.8629 60 0 86.8629 0 120V160Z" fill="#f8f6f0"/>
+          </svg>
+          <div style={{ position:'absolute',bottom:24,right:40,textAlign:'right' }}>
+            <div style={{ color:'#041c44',fontWeight:700,fontSize:18,marginBottom:4,fontFamily:"'Bodoni Moda',serif" }}>Our Services</div>
+            <a href="#services" style={{ display:'flex',alignItems:'center',justifyContent:'flex-end',gap:4,color:'#5E6470',fontWeight:500,fontSize:14,textDecoration:'none',fontFamily:"'Jost',sans-serif" }}>
+              View menu
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </a>
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Trust bar */}
+      <section style={{ padding: '48px', overflow: 'hidden' }}>
+        <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',maxWidth:1280,margin:'0 auto',opacity:0.45,filter:'grayscale(1)',transition:'all 0.7s' }}
+          onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.filter='grayscale(0)'}}
+          onMouseLeave={e=>{e.currentTarget.style.opacity='0.45';e.currentTarget.style.filter='grayscale(1)'}}>
+          {[['★','5.0 GOOGLE RATING'],['✂','EST. 2020'],['📍','SAN ANTONIO, TX'],['🕐','OPEN TODAY']].map(([icon,text])=>(
+            <div key={text} style={{ fontSize:18,fontWeight:700,display:'flex',alignItems:'center',gap:8,fontFamily:"'Jost',sans-serif",color:'#1A1408' }}>{icon} {text}</div>
+          ))}
+        </div>
+      </section>
+
+      <style>{`@keyframes tb-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}`}</style>
+    </>
   )
 }
