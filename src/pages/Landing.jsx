@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import BarberIntro from '../components/ui/hero-barber'
-import ServicePicker from '../components/ui/ServicePicker'
+import RivrHero from '../components/ui/RivrHero'
 import './Landing.css'
 
 /* ── Straight razor + geometric rings hero deco ── */
@@ -241,83 +241,13 @@ export default function Landing() {
         )}
       </AnimatePresence>
 
-      {/* Nav */}
-      <motion.nav className="nav"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? -20 : 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <div className="nav-logo"><BsbLogo size={36} /><span>BARBERZ BLVD</span></div>
-        <div className="nav-links">
-          <a href="#services">Services</a>
-          <a href="#reviews">Reviews</a>
-          <button className="nav-cta" onClick={() => navigate('/book')}>Book Now</button>
-        </div>
-      </motion.nav>
-
-      {/* Hero */}
-      <section className="hero" ref={heroRef}>
-        <motion.div className="hero-content" style={{ y: heroParallax }}>
-          <motion.p className="hero-eyebrow"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 20 : 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-          >
-            ✦ Est. 2020 — 6722 San Pedro Ave, San Antonio, TX ✦
-          </motion.p>
-          <motion.h1 className="hero-title"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 30 : 0 }}
-            transition={{ duration: 0.8, delay: 0.45 }}
-          >
-            The Art of<br />
-            <em>the Perfect Cut.</em>
-          </motion.h1>
-          <motion.p className="hero-sub"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 20 : 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-          >
-            Walk in. Transform. Walk out legendary.<br />
-            Every cut is a statement. Every line, a signature.
-          </motion.p>
-          <motion.div className="hero-actions"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 20 : 0 }}
-            transition={{ duration: 0.7, delay: 0.75 }}
-          >
-            <button className="btn-primary" onClick={() => navigate('/book')}>
-              Book Your Cut
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <a href="#services" className="btn-ghost">View services</a>
-          </motion.div>
-          <motion.div className="hero-stats"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: showIntro ? 0 : 1 }}
-            transition={{ duration: 0.7, delay: 0.9 }}
-          >
-            {[['5.0 ★', 'Google Rating'], ['Est.', '2020'], ['San Antonio', 'Texas']].map(([num, label]) => (
-              <div key={label} className="hero-stat">
-                <span className="stat-num">{num}</span>
-                <span className="stat-label">{label}</span>
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        <RazorDeco animate={!showIntro} />
-      </section>
-
-      {/* Interactive Service Picker */}
+      {/* RIVR-style glassmorphism hero */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: showIntro ? 0 : 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <ServicePicker />
+        <RivrHero />
       </motion.div>
 
       {/* 3D Experience Card */}
