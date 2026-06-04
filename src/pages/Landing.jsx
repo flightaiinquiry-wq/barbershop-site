@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import BarberIntro from '../components/ui/hero-barber'
+import ServicePicker from '../components/ui/ServicePicker'
 import './Landing.css'
 
 /* ── Straight razor + geometric rings hero deco ── */
@@ -309,6 +310,15 @@ export default function Landing() {
 
         <RazorDeco animate={!showIntro} />
       </section>
+
+      {/* Interactive Service Picker */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showIntro ? 0 : 1 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <ServicePicker />
+      </motion.div>
 
       {/* 3D Experience Card */}
       <motion.section className="experience-section"
