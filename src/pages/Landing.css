@@ -60,22 +60,25 @@
 .hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 
 .btn-primary {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   background: linear-gradient(135deg, #CA8A04, #92650A);
-  color: #1A1408; border: none; border-radius: 2px;
+  color: #1A1408; border: none; border-radius: 10px;
   padding: 14px 32px; font-family: 'Jost', sans-serif;
   font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.25s;
-  box-shadow: 0 8px 32px rgba(202,138,4,0.3);
+  cursor: pointer; transition: all 0.25s; touch-action: manipulation;
+  min-height: 48px; box-shadow: 0 8px 32px rgba(202,138,4,0.3);
+  white-space: nowrap;
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(202,138,4,0.5); }
-.btn-primary.btn-large { padding: 17px 40px; font-size: 14px; }
+.btn-primary:active { transform: scale(0.97); }
+.btn-primary.btn-large { padding: 16px 36px; font-size: 14px; }
 
 .btn-ghost {
   font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600;
   color: #5A4020; text-transform: uppercase; letter-spacing: 0.15em;
   border-bottom: 1px solid rgba(154,138,106,0.4); padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s, border-color 0.2s; cursor: pointer;
+  min-height: 44px; display: inline-flex; align-items: center; touch-action: manipulation;
 }
 .btn-ghost:hover { color: #1A1408; border-color: #1A1408; }
 
@@ -132,13 +135,15 @@
 .exp-features li svg { flex-shrink: 0; }
 
 .exp-cta {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   background: transparent; border: 1.5px solid #CA8A04; color: #CA8A04;
-  border-radius: 2px; padding: 13px 28px; font-family: 'Jost', sans-serif;
+  border-radius: 10px; padding: 13px 28px; font-family: 'Jost', sans-serif;
   font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
   cursor: pointer; width: fit-content; margin-top: 8px; transition: all 0.25s;
+  min-height: 48px; touch-action: manipulation; white-space: nowrap;
 }
 .exp-cta:hover { background: #CA8A04; color: #080806; }
+.exp-cta:active { transform: scale(0.97); }
 
 .exp-visual { flex: 1; position: relative; min-height: 460px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 
@@ -338,4 +343,21 @@
   .cta-banner { margin: 0 20px 50px; padding: 60px 24px; }
   .razor-deco { width: 200px; }
   .exp-visual { display: none; }
+
+  /* Buttons — full width on mobile for easy tapping */
+  .btn-primary { width: 100%; padding: 14px 20px; font-size: 12px; letter-spacing: 0.12em; }
+  .btn-primary.btn-large { padding: 15px 20px; font-size: 13px; }
+  .exp-cta { width: 100%; padding: 13px 20px; }
+  .btn-ghost { justify-content: center; }
+
+  /* Process steps */
+  .process-steps { padding: 0 4px; }
+  .step-num { font-size: 32px; width: 48px; }
+
+  /* Senior note */
+  .senior-note { flex-direction: column; gap: 6px; }
+
+  /* Footer links wrap */
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+  .footer { padding: 32px 20px; }
 }
