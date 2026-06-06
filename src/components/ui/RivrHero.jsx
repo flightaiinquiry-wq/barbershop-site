@@ -247,7 +247,7 @@ export default function RivrHero() {
         {/* Video */}
         <video autoPlay muted loop playsInline
           style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:0 }}
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260428_193507_4286c423-2fd9-4efd-92bd-91a939453fc1.mp4"
+          src="/22225.mp4"
         />
         <div style={{ position:'absolute',inset:0,background:'rgba(0,0,0,0.15)',zIndex:1 }}/>
 
