@@ -1,13 +1,13 @@
 const K = {
-  BOOKINGS:       'obsidian_bookings',
-  BLOCKED_SLOTS:  'obsidian_blocked_slots',
-  BLOCKED_DATES:  'obsidian_blocked_dates',
-  BLOCKED_DAYS:   'obsidian_blocked_days',
-  DEFAULT_TIMES:  'obsidian_default_times',
-  REVIEWS:        'obsidian_reviews',
-  OWNER_PIN:      'obsidian_owner_pin',
-  HOURS:          'obsidian_business_hours',
-  DAY_SCHEDULES:  'obsidian_day_schedules',
+  BOOKINGS:       'topbarber_bookings',
+  BLOCKED_SLOTS:  'topbarber_blocked_slots',
+  BLOCKED_DATES:  'topbarber_blocked_dates',
+  BLOCKED_DAYS:   'topbarber_blocked_days',
+  DEFAULT_TIMES:  'topbarber_default_times',
+  REVIEWS:        'topbarber_reviews',
+  OWNER_PIN:      'topbarber_owner_pin',
+  HOURS:          'topbarber_business_hours',
+  DAY_SCHEDULES:  'topbarber_day_schedules',
 }
 
 function buildTimeGrid(intervalMins) {

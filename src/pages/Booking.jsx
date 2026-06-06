@@ -180,7 +180,7 @@ export default function Booking() {
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.28 }}
               >
-                <p className="first-visit-q">First time at Obsidian?</p>
+                <p className="first-visit-q">First time at Top Barbershop?</p>
                 <div className="first-visit-btns">
                   <button className="btn-first" onClick={() => {
                     balloonsRef.current?.launchAnimation()
@@ -251,7 +251,7 @@ export default function Booking() {
 
       <div className="booking-wrapper">
         <div className="booking-left">
-          <div className="booking-brand">✦ OBSIDIAN</div>
+          <div className="booking-brand">✦ TOP BARBERSHOP</div>
           <h1>Reserve <em>Your Chair</em></h1>
           <p>The best cuts in the city. Book your spot before it's gone.</p>
 
