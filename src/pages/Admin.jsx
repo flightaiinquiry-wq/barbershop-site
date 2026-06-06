@@ -63,7 +63,7 @@ function LoginScreen({ onSuccess }) {
           <input
             type="text" value={username} onChange={e => setUsername(e.target.value)}
             placeholder="admin" autoComplete="username"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(202,138,4,0.3)', borderRadius: 8, padding: '12px 14px', color: '#F5F0E8', fontSize: 15, outline: 'none', fontFamily: 'Jost,sans-serif' }}
+            style={{ background: '#fff', border: '1px solid rgba(202,138,4,0.4)', borderRadius: 8, padding: '12px 14px', color: '#0D0C08', fontSize: 15, outline: 'none', fontFamily: 'Jost,sans-serif' }}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -72,7 +72,7 @@ function LoginScreen({ onSuccess }) {
             <input
               type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
               placeholder="••••••" autoComplete="current-password"
-              style={{ width: '100%', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(202,138,4,0.3)', borderRadius: 8, padding: '12px 44px 12px 14px', color: '#F5F0E8', fontSize: 15, outline: 'none', fontFamily: 'Jost,sans-serif', boxSizing: 'border-box' }}
+              style={{ width: '100%', background: '#fff', border: '1px solid rgba(202,138,4,0.4)', borderRadius: 8, padding: '12px 44px 12px 14px', color: '#0D0C08', fontSize: 15, outline: 'none', fontFamily: 'Jost,sans-serif', boxSizing: 'border-box' }}
             />
             <button type="button" onClick={() => setShowPw(v => !v)}
               style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#CA8A04', fontSize: 12, fontFamily: 'Jost,sans-serif', padding: 0 }}>
