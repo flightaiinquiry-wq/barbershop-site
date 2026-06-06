@@ -140,3 +140,12 @@ export function addReview({ name, service, rating, ratingLabel, comment }) {
 
 export function getOwnerPin()    { return localStorage.getItem(K.OWNER_PIN) || '123456' }
 export function setOwnerPin(pin) { localStorage.setItem(K.OWNER_PIN, pin) }
+
+const CREDS_KEY = 'topbarber_owner_creds'
+export function getOwnerCredentials() {
+  try { return JSON.parse(localStorage.getItem(CREDS_KEY)) || { username: 'admin', password: '123456' } }
+  catch { return { username: 'admin', password: '123456' } }
+}
+export function setOwnerCredentials(username, password) {
+  localStorage.setItem(CREDS_KEY, JSON.stringify({ username, password }))
+}

@@ -7,6 +7,7 @@ import {
   getBlockedWeekdays, blockWeekday, unblockWeekday,
   DAY_NAMES, DAY_SHORT,
   getOwnerPin, setOwnerPin,
+  getOwnerCredentials, setOwnerCredentials,
   getReviews,
   getBusinessHours, setBusinessHours, HOURS_OPTIONS,
   getDaySchedule, setDaySchedule, clearDaySchedule, getAllDaySchedules,
@@ -27,43 +28,64 @@ const MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','N
 const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December']
 const RATING_EMOJIS = ['😔','😕','😐','🙂','😍']
 
-// ── PIN Screen ──────────────────────────────────────────────────────────────
-function PinScreen({ onSuccess }) {
-  const [input, setInput] = useState('')
-  const [shake, setShake] = useState(false)
-  const [error, setError] = useState(false)
+// ── Login Screen ─────────────────────────────────────────────────────────────
+function LoginScreen({ onSuccess }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError]       = useState('')
+  const [shake, setShake]       = useState(false)
+  const [showPw, setShowPw]     = useState(false)
 
-  const enter = d => setInput(p => p.length < 6 ? p + d : p)
-  const del   = () => setInput(p => p.slice(0, -1))
-
-  useEffect(() => {
-    if (input.length < 6) return
-    if (input === getOwnerPin()) { onSuccess(); return }
-    setShake(true); setError(true)
-    setTimeout(() => { setShake(false); setError(false); setInput('') }, 700)
-  }, [input, onSuccess])
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const creds = getOwnerCredentials()
+    if (username === creds.username && password === creds.password) {
+      onSuccess()
+    } else {
+      setShake(true); setError('Incorrect username or password')
+      setTimeout(() => { setShake(false); setError('') }, 1800)
+    }
+  }
 
   return (
     <div className="pin-screen">
       <div className="pin-brand">✦ TOP BARBERSHOP</div>
-      <h2>Owner Access</h2>
-      <p>Enter your 4-digit code</p>
-      <motion.div className={`pin-dots ${error ? 'pin-error' : ''}`}
+      <h2>Owner Login</h2>
+      <p>Sign in to access your dashboard</p>
+      <motion.form
+        onSubmit={handleSubmit}
         animate={shake ? { x: [0,-10,10,-8,8,0] } : {}}
         transition={{ duration: 0.5 }}
+        style={{ width: '100%', maxWidth: 320, display: 'flex', flexDirection: 'column', gap: 12, marginTop: 8 }}
       >
-        {[0,1,2,3,4,5].map(i => <div key={i} className={`pin-dot ${input.length > i ? 'filled' : ''}`} />)}
-      </motion.div>
-      {error && <p className="pin-error-msg">Wrong code — try again</p>}
-      <div className="pin-pad">
-        {['1','2','3','4','5','6','7','8','9','','0','⌫'].map((k,i) => (
-          <button key={i} className={`pin-key ${k===''?'pin-key-empty':''}`}
-            onClick={() => k==='⌫' ? del() : k!=='' ? enter(k) : null}
-            disabled={k===''}>
-            {k}
-          </button>
-        ))}
-      </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#CA8A04' }}>Username</label>
+          <input
+            type="text" value={username} onChange={e => setUsername(e.target.value)}
+            placeholder="admin" autoComplete="username"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(202,138,4,0.3)', borderRadius: 8, padding: '12px 14px', color: '#F5F0E8', fontSize: 15, outline: 'none', fontFamily: 'Jost,sans-serif' }}
+          />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#CA8A04' }}>Password</label>
+          <div style={{ position: 'relative' }}>
+            <input
+              type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
+              placeholder="••••••" autoComplete="current-password"
+              style={{ width: '100%', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(202,138,4,0.3)', borderRadius: 8, padding: '12px 44px 12px 14px', color: '#F5F0E8', fontSize: 15, outline: 'none', fontFamily: 'Jost,sans-serif', boxSizing: 'border-box' }}
+            />
+            <button type="button" onClick={() => setShowPw(v => !v)}
+              style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#CA8A04', fontSize: 12, fontFamily: 'Jost,sans-serif', padding: 0 }}>
+              {showPw ? 'HIDE' : 'SHOW'}
+            </button>
+          </div>
+        </div>
+        {error && <p style={{ color: '#f87171', fontSize: 13, textAlign: 'center', margin: 0 }}>{error}</p>}
+        <button type="submit"
+          style={{ marginTop: 4, background: 'linear-gradient(135deg,#CA8A04,#92650A)', color: '#0D0C08', border: 'none', borderRadius: 8, padding: '13px 0', fontFamily: 'Jost,sans-serif', fontWeight: 700, fontSize: 14, letterSpacing: '0.14em', textTransform: 'uppercase', cursor: 'pointer' }}>
+          Sign In
+        </button>
+      </motion.form>
     </div>
   )
 }
@@ -402,35 +424,55 @@ function ScheduleTab() {
 
 // ── Settings Tab ──────────────────────────────────────────────────────────────
 function SettingsTab() {
-  const [pin, setPin]           = useState('')
-  const [pinConfirm, setPC]     = useState('')
-  const [pinMsg, setPinMsg]     = useState('')
+  const current = getOwnerCredentials()
+  const [newUser, setNewUser]   = useState('')
+  const [newPass, setNewPass]   = useState('')
+  const [confirm, setConfirm]   = useState('')
+  const [msg, setMsg]           = useState('')
+  const [showPw, setShowPw]     = useState(false)
 
-  const savePin = () => {
-    if (pin.length!==6 || !/^\d{6}$/.test(pin)) { setPinMsg('PIN must be 6 digits'); return }
-    if (pin!==pinConfirm) { setPinMsg('PINs do not match'); return }
-    setOwnerPin(pin); setPin(''); setPC('')
-    setPinMsg('✓ PIN updated!'); setTimeout(()=>setPinMsg(''),2500)
+  const save = () => {
+    if (!newUser.trim()) { setMsg('Username cannot be empty'); return }
+    if (newPass.length < 4) { setMsg('Password must be at least 4 characters'); return }
+    if (newPass !== confirm) { setMsg('Passwords do not match'); return }
+    setOwnerCredentials(newUser.trim(), newPass)
+    setNewUser(''); setNewPass(''); setConfirm('')
+    setMsg('✓ Login updated!'); setTimeout(() => setMsg(''), 2500)
   }
 
   return (
     <div className="tab-content">
       <section className="settings-section">
-        <h3>Change Access PIN</h3>
+        <h3>Change Login Credentials</h3>
+        <p className="section-hint" style={{ marginBottom: 16 }}>
+          Current username: <strong style={{ color: '#CA8A04' }}>{current.username}</strong>
+        </p>
         <div className="settings-fields">
           <div className="field-group">
-            <label>New PIN (4 digits)</label>
-            <input type="password" maxLength={6} placeholder="••••••" className="admin-input"
-              value={pin} onChange={e=>setPin(e.target.value.replace(/\D/g,''))} />
+            <label>New Username</label>
+            <input type="text" placeholder={current.username} className="admin-input"
+              value={newUser} onChange={e => setNewUser(e.target.value)} />
           </div>
           <div className="field-group">
-            <label>Confirm PIN</label>
-            <input type="password" maxLength={6} placeholder="••••••" className="admin-input"
-              value={pinConfirm} onChange={e=>setPC(e.target.value.replace(/\D/g,''))} />
+            <label>New Password</label>
+            <div style={{ position: 'relative' }}>
+              <input type={showPw ? 'text' : 'password'} placeholder="Min 4 characters" className="admin-input"
+                style={{ width: '100%', paddingRight: 56 }}
+                value={newPass} onChange={e => setNewPass(e.target.value)} />
+              <button type="button" onClick={() => setShowPw(v => !v)}
+                style={{ position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'#CA8A04',fontSize:11,fontFamily:'Jost,sans-serif',fontWeight:600,letterSpacing:'0.1em' }}>
+                {showPw ? 'HIDE' : 'SHOW'}
+              </button>
+            </div>
+          </div>
+          <div className="field-group">
+            <label>Confirm Password</label>
+            <input type="password" placeholder="Repeat password" className="admin-input"
+              value={confirm} onChange={e => setConfirm(e.target.value)} />
           </div>
         </div>
-        <button className="btn-save" onClick={savePin}>Update PIN</button>
-        {pinMsg && <p className={`settings-msg ${pinMsg.startsWith('✓')?'success':'error'}`}>{pinMsg}</p>}
+        <button className="btn-save" onClick={save}>Update Login</button>
+        {msg && <p className={`settings-msg ${msg.startsWith('✓') ? 'success' : 'error'}`}>{msg}</p>}
       </section>
     </div>
   )
@@ -452,7 +494,7 @@ export default function Admin() {
       icon:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> },
   ]
 
-  if (!authed) return <PinScreen onSuccess={() => setAuthed(true)} />
+  if (!authed) return <LoginScreen onSuccess={() => setAuthed(true)} />
 
   return (
     <div className="admin-page">
