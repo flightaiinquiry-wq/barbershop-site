@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import RivrHero from '../components/ui/RivrHero'
+import LegalModal from '../components/ui/LegalModal'
 import './Landing.css'
 
 /* ── Service card ── */
@@ -78,6 +80,7 @@ function BarberPole() {
 /* ── Main ── */
 export default function Landing() {
   const navigate = useNavigate()
+  const [legalDoc, setLegalDoc] = useState(null)
 
   const services = [
     {
@@ -354,9 +357,21 @@ export default function Landing() {
           <a href="tel:+12105486613">+1 (210) 548-6613</a>
         </div>
         <p style={{ fontSize: '12px', color: '#9A8A62', marginTop: '4px' }}>6722 San Pedro Ave, San Antonio, TX 78216</p>
-        <p className="footer-copy">© 2020 Top Barbershop — All Rights Reserved.</p>
+        {/* Legal links */}
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
+          {[['privacy','Privacy Policy'],['terms','Terms of Service'],['cancellation','Cancellation Policy']].map(([doc, label]) => (
+            <button key={doc} onClick={() => setLegalDoc(doc)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'rgba(202,138,4,0.7)', fontFamily: "'Jost',sans-serif", letterSpacing: '0.05em', textDecoration: 'underline', textDecorationColor: 'rgba(202,138,4,0.3)', padding: 0 }}>
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <p className="footer-copy" style={{ marginTop: 12 }}>© 2020 Top Barbershop — All Rights Reserved.</p>
         <button className="owner-login-btn" onClick={() => navigate('/owner')}>Owner Login</button>
       </footer>
+
+      {legalDoc && <LegalModal doc={legalDoc} onClose={() => setLegalDoc(null)} />}
     </div>
   )
 }
